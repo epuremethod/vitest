@@ -412,6 +412,8 @@ And finally, here are some nice extensions for VS Code that can support your BDD
 
 # Changelog
 
+- **1.0.0** (2026-04-05)
+  - Upgrade tests to ReScript 12, release stable v1
 - **0.6.2** (2025-12-18)
   - Add default support for "tsx" and "jsx" step file discovery
 - **0.6.1** (2025-12-18)

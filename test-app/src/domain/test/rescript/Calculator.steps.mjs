@@ -4,22 +4,15 @@ import * as Vitest from "vitest";
 import * as VitestBdd from "vitest-bdd";
 import * as ResCalculator from "../../feature/ResCalculator.mjs";
 
-VitestBdd.Given("I have a {string} calculator", (function (param, name) {
-        var step = param.step;
-        var calculator = ResCalculator.make(name);
-        step("I add {number} and {number}", calculator.add);
-        step("I subtract {number} and {number}", calculator.subtract);
-        step("I multiply {number} and {number}", calculator.multiply);
-        step("I divide {number} by {number}", calculator.divide);
-        step("the result is {number}", (function (n) {
-                Vitest.expect(calculator.result).toBe(n);
-              }));
-        step("the title is {string}", (function (s) {
-                Vitest.expect(calculator.title).toBe(s);
-              }));
-      }));
+VitestBdd.Given("I have a {string} calculator", (param, name) => {
+  let step = param.step;
+  let calculator = ResCalculator.make(name);
+  step("I add {number} and {number}", calculator.add);
+  step("I subtract {number} and {number}", calculator.subtract);
+  step("I multiply {number} and {number}", calculator.multiply);
+  step("I divide {number} by {number}", calculator.divide);
+  step("the result is {number}", n => Vitest.expect(calculator.result).toBe(n));
+  step("the title is {string}", s => Vitest.expect(calculator.title).toBe(s));
+});
 
-export {
-  
-}
 /*  Not a pure module */

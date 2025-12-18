@@ -9,6 +9,5 @@
     "in-source": true
   },
   "suffix": ".mjs",
-  "bs-dependencies": ["@rescript/core", "vitest-bdd", "tilia"],
-  "bsc-flags": ["-open RescriptCore"]
+  "dependencies": ["vitest-bdd", "tilia"]
 }

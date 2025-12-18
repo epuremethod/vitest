@@ -1,7 +1,7 @@
-import { existsSync } from "node:fs";
+import {existsSync} from "node:fs";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { stepsResolver as originalStepsResolver, vitestBdd } from "vitest-bdd";
-import { defineConfig } from "vitest/config";
+import {stepsResolver as originalStepsResolver, vitestBdd} from "vitest-bdd";
+import {defineConfig} from "vitest/config";
 
 export default defineConfig({
   plugins: [
@@ -13,7 +13,7 @@ export default defineConfig({
 
   test: {
     pool: "threads",
-    include: ["**/*.feature", "**/*.md", "**/*.spec.ts", "**/*_test.res"],
+    include: ["src/**/*.feature", "src/**/*.md", "src/**/*.spec.ts", "src/**/*_test.res"],
   },
 });
 

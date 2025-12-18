@@ -44,7 +44,7 @@ type rec passertions<'a> = {
   toBeLessThan: float => promise<unit>,
   toBeLessThanOrEqual: float => promise<unit>,
   // Strings
-  toMatch: Js.Re.t => promise<unit>,
+  toMatch: RegExp.t => promise<unit>,
   toMatchInlineSnapshot: (~message: string=?, string) => promise<unit>,
   toMatchSnapshot: (~message: string=?) => promise<unit>,
   // Arrays and objects
@@ -94,7 +94,7 @@ type rec assertions<'a> = {
   toBeLessThan: float => unit,
   toBeLessThanOrEqual: float => unit,
   // Strings
-  toMatch: Js.Re.t => unit,
+  toMatch: RegExp.t => unit,
   toMatchInlineSnapshot: (~message: string=?, string) => unit,
   toMatchSnapshot: (~message: string=?) => unit,
   // Arrays and objects
@@ -135,7 +135,7 @@ type expected = {
   arrayContaining: 'a 'b. array<'a> => 'b,
   objectContaining: 'a 'b. 'a => 'b,
   stringContaining: 'a. string => 'a,
-  stringMatching: 'a. Js.Re.t => 'a,
+  stringMatching: 'a. RegExp.t => 'a,
   // Snapshot serializers
   addSnapshotSerializer: 'a. 'a => unit,
   // Custom matchers

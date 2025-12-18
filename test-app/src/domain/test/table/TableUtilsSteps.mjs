@@ -2,36 +2,25 @@
 
 import * as Tilia from "tilia/src/Tilia.mjs";
 import * as Vitest from "vitest";
-import * as Core__Int from "@rescript/core/src/Core__Int.mjs";
+import * as Stdlib_Int from "@rescript/runtime/lib/es6/Stdlib_Int.js";
 import * as VitestBdd from "vitest-bdd";
-import * as Core__Option from "@rescript/core/src/Core__Option.mjs";
+import * as Stdlib_Option from "@rescript/runtime/lib/es6/Stdlib_Option.js";
 
-VitestBdd.Given("I have a table", (function (param, data) {
-        var step = param.step;
-        var match = Tilia.signal([]);
-        var setRecords = match[1];
-        var records = match[0];
-        var match$1 = Tilia.signal({
-              name: "",
-              age: ""
-            });
-        var setRecord = match$1[1];
-        var record = match$1[0];
-        step("I convert the table to records", (function () {
-                setRecords(VitestBdd.toRecords(data));
-              }));
-        step("I select record {number}", (function (index) {
-                setRecord(Core__Option.getExn(records.value[index], undefined));
-              }));
-        step("selected name should be {string}", (function (value) {
-                Vitest.expect(record.value.name).toBe(value);
-              }));
-        step("selected age should be {number}", (function (value) {
-                Vitest.expect(Core__Int.fromString(record.value.age, undefined)).toBe(value);
-              }));
-      }));
+VitestBdd.Given("I have a table", (param, data) => {
+  let step = param.step;
+  let match = Tilia.signal([]);
+  let setRecords = match[1];
+  let records = match[0];
+  let match$1 = Tilia.signal({
+    name: "",
+    age: ""
+  });
+  let setRecord = match$1[1];
+  let record = match$1[0];
+  step("I convert the table to records", () => setRecords(VitestBdd.toRecords(data)));
+  step("I select record {number}", index => setRecord(Stdlib_Option.getOrThrow(records.value[index], undefined)));
+  step("selected name should be {string}", value => Vitest.expect(record.value.name).toBe(value));
+  step("selected age should be {number}", value => Vitest.expect(Stdlib_Int.fromString(record.value.age, undefined)).toBe(value));
+});
 
-export {
-  
-}
 /*  Not a pure module */

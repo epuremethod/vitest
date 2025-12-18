@@ -2,26 +2,13 @@
 
 import * as Vitest from "vitest";
 
-Vitest.describe("ReScript tests and source maps", (function () {
-        Vitest.it("should add two numbers", (function () {
-                Vitest.expect(4).toBe(4);
-              }));
-        Vitest.it("should work with async", (async function () {
-                return Vitest.expect(9).toBe(9);
-              }));
-        Vitest.it("should have more tests", (function () {
-                Vitest.expect(3).toBe(3);
-              }));
-        Vitest.it("should have more and more tests", (function () {
-                Vitest.expect(3).toBe(3);
-              }));
-        Vitest.it.todo("todo");
-        Vitest.it.skip("skipped test", (function () {
-                Vitest.expect(3).toBe(3);
-              }));
-      }));
+Vitest.describe("ReScript tests and source maps", () => {
+  Vitest.it("should add two numbers", () => Vitest.expect(4).toBe(4));
+  Vitest.it("should work with async", async () => Vitest.expect(9).toBe(9));
+  Vitest.it("should have more tests", () => Vitest.expect(3).toBe(3));
+  Vitest.it("should have more and more tests", () => Vitest.expect(3).toBe(3));
+  Vitest.it.todo("todo");
+  Vitest.it.skip("skipped test", () => Vitest.expect(3).toBe(3));
+});
 
-export {
-  
-}
 /*  Not a pure module */

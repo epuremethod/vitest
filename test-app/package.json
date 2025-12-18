@@ -8,16 +8,15 @@
     "test:watch": "vitest",
     "res:build": "rescript",
     "res:clean": "rescript clean",
-    "res:dev": "rescript -w"
+    "res:dev": "rescript watch"
   },
   "devDependencies": {
-    "tilia": "3.0.0-beta.20250817T011709",
+    "tilia": "5.0.0-beta.20251218T180640",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.1.3",
     "vitest-bdd": "file:../vitest-bdd"
   },
   "dependencies": {
-    "@rescript/core": "1.6.1",
-    "rescript": "11.1.4"
+    "rescript": "12.2.0"
   }
 }

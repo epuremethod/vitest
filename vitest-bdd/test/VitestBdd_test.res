@@ -97,7 +97,7 @@ describe("VitestBdd", () => {
     expect(4.0).toBeLessThanOrEqual(4.0)
   })
   it("should support toMatch", () => {
-    expect("hello world").toMatch(%re("/world/"))
+    expect("hello world").toMatch(/world/)
   })
   it("should support toMatchInlineSnapshot", () => {
     expect({foo: "bar"}).toMatchInlineSnapshot(`{
@@ -123,26 +123,26 @@ describe("VitestBdd", () => {
     expect(2).toBeOneOf([1, 2, 3])
   })
   it("should support toThrow", () => {
-    let f = () => {raise(Failure("fail"))}
+    let f = () => {throw(Failure("fail"))}
     expect(f).toThrow()
   })
   it("should support toThrowError", () => {
-    let f = () => {raise(Failure("fail"))}
+    let f = () => {throw(Failure("fail"))}
     expect(f).toThrowError(~message="fail")
   })
   it("should support resolves", async () => {
-    let promise = Js.Promise.resolve(42)
+    let promise = Promise.resolve(42)
     // Await not required as return value of async
     expect(promise).resolves.toBe(42)
   })
   it("should force await on resolves", async () => {
-    let promise = Js.Promise.resolve(42)
+    let promise = Promise.resolve(42)
     // Await required here or ReScript will not compile
     await expect(promise).resolves.toBe(42)
     expect(1).toBe(1)
   })
   it("should support rejects", async () => {
-    let promise = Js.Promise.reject(MyException("fail"))
+    let promise = Promise.reject(MyException("fail"))
     await expect(promise).rejects.toMatchObject(MyException("fail"))
   })
   it("should support toSatisfy", () => {
@@ -155,11 +155,11 @@ describe("VitestBdd", () => {
     await expect("blah blah").toMatchFileSnapshot("blah-blah.txt")
   })
   it("should support toThrowErrorMatchingSnapshot", () => {
-    let f = () => {raise(Failure("fail"))}
+    let f = () => {throw(Failure("fail"))}
     expect(f).toThrowErrorMatchingSnapshot()
   })
   it("should support toThrowErrorMatchingInlineSnapshot", () => {
-    let f = () => {raise(Failure("fail"))}
+    let f = () => {throw(Failure("fail"))}
     expect(f).toThrowErrorMatchingInlineSnapshot(`{ 
       "Failure": "fail"
     }`)
@@ -205,7 +205,7 @@ describe("VitestBdd", () => {
   })
   it("should support expected.stringMatching in toEqual", () => {
     expect({name: "abc123", age: 30}).toEqual({
-      name: expected.stringMatching(%re("/\d+/")),
+      name: expected.stringMatching(/\d+/),
       age: expected.any(OfType.number),
     })
   })

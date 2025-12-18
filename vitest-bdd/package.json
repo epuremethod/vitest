@@ -35,7 +35,7 @@
   },
   "scripts": {
     "res:build": "rescript",
-    "res:dev-build": "rescript build -with-deps",
+    "res:dev-build": "rescript -with-deps",
     "res:clean": "rescript clean",
     "res:dev": "rescript -w",
     "clean": "rimraf dist",
@@ -51,7 +51,7 @@
   "devDependencies": {
     "@types/node": "^24.0.3",
     "clean-package": "^2.2.0",
-    "rescript": "11.1.4",
+    "rescript": "12.2.0",
     "rimraf": "^5.0.0",
     "tsup": "^8.5.1",
     "typescript": "^5.8.3",

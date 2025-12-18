@@ -3,30 +3,20 @@
 import * as Tilia from "tilia/src/Tilia.mjs";
 
 function make(name) {
-  var match = Tilia.signal(0);
-  var setResult = match[1];
-  var result = match[0];
+  let match = Tilia.signal(0);
+  let setResult = match[1];
+  let result = match[0];
   return Tilia.tilia({
-              add: (function (a, b) {
-                  setResult(a + b);
-                }),
-              subtract: (function (a, b) {
-                  setResult(a - b);
-                }),
-              multiply: (function (a, b) {
-                  setResult(a * b);
-                }),
-              divide: (function (a, b) {
-                  setResult(a / b);
-                }),
-              result: Tilia.computed(function () {
-                    return result.value;
-                  }),
-              title: name
-            });
+    add: (a, b) => setResult(a + b),
+    subtract: (a, b) => setResult(a - b),
+    multiply: (a, b) => setResult(a * b),
+    divide: (a, b) => setResult(a / b),
+    result: Tilia.computed(() => result.value),
+    title: name
+  });
 }
 
 export {
-  make ,
+  make,
 }
 /* Tilia Not a pure module */

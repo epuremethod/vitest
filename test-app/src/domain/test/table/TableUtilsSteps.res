@@ -15,7 +15,7 @@ given("I have a table", ({step}, data) => {
   })
 
   step("I select record {number}", index => {
-    setRecord(records.value[index]->Option.getExn)
+    setRecord(records.value[index]->Option.getOrThrow)
   })
 
   step("selected name should be {string}", value => {
