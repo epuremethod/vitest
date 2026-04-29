@@ -32,10 +32,6 @@ export function vitestBdd(opts: VitestBddOptions = {}): Plugin {
   return {
     name: "vitest-bdd",
     enforce: "pre",
-    resolveId(id) {
-      const ext = extname(id);
-      if (options.markdownExtensions.includes(ext) || options.gherkinExtensions.includes(ext)) return id;
-    },
     load(id) {
       return compile(id, options);
     },
