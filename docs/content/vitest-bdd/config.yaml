@@ -1,5 +1,7 @@
 base: ../base-config.yaml
 var:
+  dist: ../../../dist
+  assets: ../../assets
   project: vitest-bdd
 
 shared:
@@ -31,7 +33,7 @@ shared:
             <a href="./index.html">Home</a>
             <a href="./docs.html"{{docsCurrentAttr}}>Docs</a>
             <a href="./api.html"{{apiCurrentAttr}}>API</a>
-            <a href="https://github.com/tiliajs/vitest-bdd">GitHub</a>
+            <a href="https://github.com/midasum/vitest-bdd">GitHub</a>
           </nav>
         </div>
       </header>
@@ -39,7 +41,7 @@ shared:
       <footer class="foot">
         <div class="wrap">
           <div class="fcell"><span class="lbl">Package</span><span class="val"><a href="https://www.npmjs.com/package/vitest-bdd">vitest-bdd on npm</a></span></div>
-          <div class="fcell"><span class="lbl">Source</span><span class="val"><a href="https://github.com/tiliajs/vitest-bdd">github.com/tiliajs/vitest-bdd</a></span></div>
+          <div class="fcell"><span class="lbl">Source</span><span class="val"><a href="https://github.com/midasum/vitest-bdd">github.com/midasum/vitest-bdd</a></span></div>
           <div class="fcell"><span class="lbl">License</span><span class="val">MIT</span></div>
           <div class="fcell"><span class="lbl">Method</span><span class="val"><a href="https://epuremethod.com">épure</a></span></div>
           <div class="fcell"><span class="lbl">Site</span><span class="val">vitest-bdd.dev</span></div>
@@ -54,14 +56,15 @@ pages:
   api:
     input:
       markdownDir: api
+    output: "{{dist}}/api.html"
     assets:
       copy:
         - from: index.html
-          to: ../../dist/{{project}}/index.html
-        - from: ../../assets/vitest-bdd/style.css
-          to: ../../dist/{{project}}/style.css
-        - from: ../../assets/fonts
-          to: ../../dist/{{project}}/fonts
+          to: "{{dist}}/index.html"
+        - from: "{{assets}}/style.css"
+          to: "{{dist}}/style.css"
+        - from: "{{assets}}/fonts"
+          to: "{{dist}}/fonts"
           recursive: true
     templates:
       pageMain: |-
@@ -93,14 +96,15 @@ pages:
   guide:
     input:
       markdownDir: guide
+    output: "{{dist}}/docs.html"
     assets:
       copy:
         - from: index.html
-          to: ../../dist/{{project}}/index.html
-        - from: ../../assets/style.css
-          to: ../../dist/{{project}}/style.css
-        - from: ../../assets/fonts
-          to: ../../dist/{{project}}/fonts
+          to: "{{dist}}/index.html"
+        - from: "{{assets}}/style.css"
+          to: "{{dist}}/style.css"
+        - from: "{{assets}}/fonts"
+          to: "{{dist}}/fonts"
           recursive: true
     templates:
       pageMain: |-

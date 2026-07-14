@@ -38,10 +38,6 @@ const pageInputSchema = S.schema({
   sourceLabel: S.string,
 });
 
-const pageOutputSchema = S.schema({
-  htmlFile: S.string,
-});
-
 const pageDocumentSchema = S.schema({
   title: S.string,
   description: S.string,
@@ -75,7 +71,7 @@ const guideTemplatesSchema = S.schema({
 
 const pageApiSchema = S.schema({
   input: pageInputSchema,
-  output: pageOutputSchema,
+  output: S.string,
   templates: apiTemplatesSchema,
   document: pageDocumentSchema,
   assets: pageAssetsSchema,
@@ -83,7 +79,7 @@ const pageApiSchema = S.schema({
 
 const pageGuideSchema = S.schema({
   input: pageInputSchema,
-  output: pageOutputSchema,
+  output: S.string,
   templates: guideTemplatesSchema,
   document: pageDocumentSchema,
   assets: pageAssetsSchema,
@@ -91,9 +87,7 @@ const pageGuideSchema = S.schema({
 
 const buildConfigSchema = S.schema({
   base: S.optional(S.string),
-  var: S.schema({
-    project: S.string,
-  }),
+  var: S.record(S.string),
   shared: S.schema({
     literals: S.schema({
       wordmarkSvg: S.string,
@@ -135,7 +129,11 @@ export function parseGuideChapter(file, raw) {
 
 export function parseBuildConfig(file, data) {
   try {
-    return S.parser(buildConfigSchema)(data);
+    const config = S.parser(buildConfigSchema)(data);
+    if (typeof config.var.project !== "string") {
+      throw new Error("var.project: expected string");
+    }
+    return config;
   } catch (err) {
     throw new Error(`${file}: ${err.message}`);
   }

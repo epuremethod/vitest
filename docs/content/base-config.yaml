@@ -101,8 +101,7 @@ pages:
       glob: "*.md"
       parser: parseApiEntry
       sourceLabel: content/api/{{file}}
-    output:
-      htmlFile: ../../dist/{{project}}/api.html
+    output: ../../dist/{{project}}/api.html
     templates:
       indexGroup: |-
         <p class="k idx-group">{{moduleLabel}}</p>
@@ -166,8 +165,7 @@ pages:
       glob: "*.md"
       parser: parseGuideChapter
       sourceLabel: content/guide/{{file}}
-    output:
-      htmlFile: ../../dist/{{project}}/docs.html
+    output: ../../dist/{{project}}/docs.html
     templates:
       tocItem: |-
         <li><a href="#{{slug}}">{{title}}</a></li>
