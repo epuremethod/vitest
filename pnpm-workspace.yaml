@@ -1,6 +1,7 @@
 packages:
   - vitest-bdd
   - test-app
+  - docs
 
 ignoredBuiltDependencies:
   - esbuild

@@ -1,0 +1,922 @@
+/* ============================================================
+   vitest-bdd.dev — blueprint stylesheet
+   An independent site in the épure family: same type system,
+   hairline-and-ink discipline — on cool stone paper (the proof
+   bench). Near-achromatic gray-clay system with one sanguine
+   annotation mark. The affordance rules in DESIGN.md are
+   load-bearing: color cannot signal function here.
+   ============================================================ */
+
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/ibm-plex-sans-400.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 500; font-display: swap; src: url("./fonts/ibm-plex-sans-500.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url("./fonts/ibm-plex-sans-600.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/ibm-plex-mono-400.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("./fonts/ibm-plex-mono-500.woff2") format("woff2"); }
+
+/* ---------- tokens ---------- */
+:root {
+  /* stone bones — the proof bench, coolest stock of the family */
+  --paper: #f2f1ec;   /* stone — cooler than épure #f7f5f1, faint olive undertone */
+  --card: #faf9f5;    /* code card, feature examples */
+  --ink: #1d1a14;
+  --muted: #5c5544;
+  --faint: #8d8371;
+  --line: #d9d7cd;    /* hairlines cooled to sit on stone */
+  --shade: #e6e4dc;   /* recessed panels — reads recessed, not highlighted */
+
+  /* clay system — near-achromatic; the four affordance rules in
+     DESIGN.md are load-bearing: color cannot signal function here */
+  --clay: #5a554c;       /* AREAS only: buttons, tag grounds, dictionary rule — white 7.4:1 */
+  --clay-deep: #3f3b34;  /* hover / active */
+  --clay-soft: #eeebe2;  /* slip — tint fills (lifted from #e9e6de: spec value collided with --shade) */
+  --clay-ink: #47433c;   /* text on --clay-soft fills; code values */
+  --mark: #b0402a;       /* sanguine — ANNOTATION ONLY: logo crosshair, PROOF stamp
+                            border, active-nav tick. Never links, buttons, hovers,
+                            or pass/fail. 5.2:1 on paper — holds for thin strokes */
+  --mark-dim: #a68c86;    /* light sanguine — functions */
+
+  /* the bench's two metals — code panes are the one place this site
+     speaks in hue. Affordance rules untouched: never links, buttons,
+     hovers, or state — these two colors exist only inside <pre>. */
+  --steel: #3d566b;      /* instrument steel — code keywords. 7.3:1 on card */
+  --verdigris: #4ea188;  /* patina — strings & measured values. 6.7:1 on card */
+  /* pane-chip grounds — four washed workshop materials, one per pane, same
+     light muted register with ink text (≈6.8:1). Toggle AREAS only. */
+  --chip-feature: #98a4a0; /* washed patina — FEATURE (gherkin) */
+  --chip-steps: #ada094;   /* washed bronze — STEPS (the typed side) */
+  --chip-ts: #9aa7b4;      /* washed steel — TS */
+  --chip-res: #b2b0b3;     /* washed porphyry — RES (not ReScript red:
+                              red is annotation/failure here) */
+
+  --sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+}
+
+/* ---------- base ---------- */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "tnum";
+}
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+figure { margin: 0; }
+a { color: inherit; }
+::selection { background: var(--clay-soft); }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* small-caps mono label */
+.k {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: clamp(20px, 4vw, 36px);
+  padding-right: clamp(20px, 4vw, 36px);
+}
+
+/* ---------- header ---------- */
+.top {
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.01em;
+}
+.wordmark svg { display: block; color: var(--mark); }
+.nav { display: flex; gap: clamp(14px, 3vw, 26px); }
+.nav a {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 4px 0;
+  /* every link is underlined, always (affordance rule 2) */
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+.nav a:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px; /* hover changes lightness AND form (rule 3) */
+}
+.nav a[aria-current="page"] {
+  color: var(--ink);
+  /* sanguine tick — annotation: marks the current page (rule 4) */
+  text-decoration-color: var(--mark);
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- sections ---------- */
+section { padding-top: clamp(52px, 8vw, 88px); padding-bottom: clamp(52px, 8vw, 88px); }
+section + section { border-top: 1px solid var(--line); }
+
+.sec-head h2 { font-size: clamp(23px, 3.2vw, 30px); font-weight: 600; letter-spacing: -0.01em; }
+.sec-lead { max-width: 60ch; margin-top: 12px; color: var(--muted); font-size: 16.5px; }
+.sec-head { margin-bottom: 0; }
+
+/* ---------- hero ---------- */
+.hero { overflow: clip; }
+.hero .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: clamp(32px, 5vw, 60px);
+  align-items: center;
+}
+.eyerow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-bottom: 20px;
+}
+.stamp {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--clay-ink);
+  border: 1.5px solid var(--mark); /* sanguine stamp border — annotation (rule 4) */
+  padding: 3px 9px;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+.eyebrow .sep { color: var(--faint); padding: 0 6px; }
+.hero h1 {
+  font-size: clamp(34px, 5.2vw, 52px);
+  line-height: 1.06;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.hero .lead {
+  margin-top: 20px;
+  max-width: 50ch;
+  color: var(--muted);
+  font-size: 17px;
+}
+.lead code { font-family: var(--mono); font-size: 0.92em; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.btn {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 22px;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
+}
+.btn:hover { background: var(--clay-soft); } /* form change, not color-only (rule 3) */
+.btn.solid {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff; /* 7.4:1 */
+}
+.btn.solid:hover,
+.btn.solid:active {
+  background: var(--clay-deep);
+  border-color: var(--clay-deep);
+  color: #fff;
+}
+
+/* dictionary entry */
+.defcard {
+  margin-top: 34px;
+  max-width: 52ch;
+  padding: 15px 20px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--clay); /* the dictionary block's rule — a clay area (rule 1) */
+  background: var(--card);
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.defcard .term { font-family: var(--mono); font-weight: 500; color: var(--ink); }
+.defcard .ipa { font-family: var(--mono); color: var(--faint); }
+.defcard .gram { font-style: italic; color: var(--faint); }
+
+/* ---------- code figure ---------- */
+.codefig {
+  border: 1.5px solid var(--ink);
+  background: var(--card);
+}
+.codebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.codebar .figlabel { color: var(--faint); }
+.langswitch, .viewswitch { display: inline-flex; border: 1px solid var(--line); }
+.langswitch button, .viewswitch button {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  cursor: pointer;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+}
+.langswitch button + button, .viewswitch button + button { border-left: 1px solid var(--line); }
+/* pressed pane — each pane owns a washed material, so the fill alone names
+   what is showing: patina = feature, bronze = steps, steel = TS, porphyry
+   = RES. Clay stays the ground for real buttons and tags. */
+.langswitch button[aria-pressed="true"], .viewswitch button[aria-pressed="true"] { color: var(--ink); }
+.langswitch button[data-lang="steps"][aria-pressed="true"],
+.viewswitch button[data-view="steps"][aria-pressed="true"] { background: var(--chip-steps); }
+.langswitch button[data-lang="feature"][aria-pressed="true"],
+.viewswitch button[data-view="feature"][aria-pressed="true"] { background: var(--chip-feature); }
+pre.code {
+  margin: 0;
+  padding: 20px 22px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.codefig[data-lang="feature"] .code-steps { display: none; }
+.codefig[data-lang="steps"] .code-feature { display: none; }
+.codefoot {
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.codefoot .ps1 { color: var(--faint); }
+
+/* hand-set syntax tokens — steel keywords, verdigris measured values */
+.tk { color: var(--steel); }                          /* keyword — instrument steel */
+.ts { color: var(--verdigris); font-weight: 500; }    /* string, measured value — patina */
+.tc { color: var(--faint); font-style: italic; }      /* comment */
+.tf { font-weight: 500; }                             /* call */
+
+/* ---------- the wing compass at the card corner ---------- */
+.code-slot { position: relative; }
+.code-slot .codefig { position: relative; z-index: 1; }
+.compass-mark {
+  position: absolute;
+  right: -140px;
+  bottom: -90px;
+  width: 260px;
+  height: auto;
+  color: var(--clay);
+  opacity: 0.35;
+  z-index: 0;
+  pointer-events: none;
+}
+@media (max-width: 920px) {
+  .compass-mark { display: none; }
+}
+
+/* ---------- value propositions ---------- */
+.props {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  margin-top: clamp(28px, 4vw, 44px);
+}
+.prop {
+  padding: 26px 26px 30px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.prop:hover { background: var(--card); }
+.prop .pid {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--muted); /* thin element — no clay, no mark (rule 1) */
+}
+.prop .glyph { margin: 18px 0 14px; color: var(--muted); }
+.prop:hover .glyph { color: var(--ink); }
+.prop .glyph svg { display: block; }
+.prop h3 { font-size: 17.5px; font-weight: 600; margin-bottom: 8px; }
+.prop p { font-size: 14.5px; color: var(--muted); max-width: 44ch; }
+
+/* ---------- bridge to épure ---------- */
+.bridge {
+  position: relative;
+  border: 1.5px solid var(--ink);
+  background: var(--card);
+  padding: 24px 28px;
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+}
+.bridge .k {
+  /* the PROOF stamp — sanguine border, clay-ink text (rule 4) */
+  color: var(--clay-ink);
+  white-space: nowrap;
+  font-weight: 500;
+  border: 1.5px solid var(--mark);
+  padding: 3px 9px;
+}
+.bridge p { font-size: 15px; color: var(--muted); max-width: 62ch; }
+.bridge p strong { color: var(--ink); font-weight: 600; }
+.bridge-link {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.bridge-link:hover {
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+  background: var(--clay-soft);
+}
+.bridge-link .arrow { color: var(--muted); }
+
+/* registration crosshairs — the épure stitch */
+.reg { position: absolute; width: 22px; height: 22px; pointer-events: none; }
+.reg::before, .reg::after { content: ""; position: absolute; background: var(--ink); }
+.reg::before { left: 50%; top: 0; width: 1px; height: 100%; }
+.reg::after { top: 50%; left: 0; height: 1px; width: 100%; }
+.reg.tl { top: -12px; left: -12px; }
+.reg.br { bottom: -12px; right: -12px; }
+
+/* ---------- footer ---------- */
+.foot { border-top: 1.5px solid var(--ink); background: var(--paper); }
+.foot .wrap {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  justify-content: space-between;
+  gap: 12px 28px;
+  padding-top: 18px;
+  padding-bottom: 22px;
+}
+.fcell { min-width: 0; }
+.fcell .lbl {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 3px;
+}
+.fcell .val { font-family: var(--mono); font-size: 12.5px; color: var(--ink); overflow-wrap: anywhere; }
+.fcell .val a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.fcell .val a:hover {
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+  background: var(--clay-soft);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 920px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .props { grid-template-columns: 1fr 1fr; }
+  .bridge { flex-wrap: wrap; }
+  .bridge-link { margin-left: 0; }
+}
+@media (max-width: 680px) {
+  .props { grid-template-columns: 1fr; }
+  .foot .wrap { grid-template-columns: 1fr 1fr; }
+  .nav a:not([href*="github"]):not([aria-current]) { display: none; }
+}
+
+/* ============================================================
+   Docs & API pages — generated by the docs build.
+   Same bones as the landing; every link underlined (rule 2),
+   clay in areas only (rule 1), sanguine only as the active-nav
+   tick (rule 4), code set in the bench's two metals (steel,
+   verdigris) — hue that lives only inside the panes.
+   ============================================================ */
+
+/* skip link */
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 10px 18px;
+}
+.skip:focus { left: 0; }
+
+/* prose links — ink, underlined, hover thickens and fills (rules 2, 3) */
+.standfirst a,
+.chapter p.body a,
+.entry .prose > p a,
+.xref a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.standfirst a:hover,
+.chapter p.body a:hover,
+.entry .prose > p a:hover,
+.xref a:hover {
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+  background: var(--clay-soft);
+}
+
+/* ---------- docs page ---------- */
+.docs-head {
+  padding-top: clamp(40px, 6vw, 64px);
+  padding-bottom: clamp(28px, 4vw, 40px);
+  border-bottom: 1px solid var(--line);
+}
+.docs-head h1 { font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.015em; }
+.docs-head .eyebrow { margin-bottom: 14px; }
+.standfirst {
+  margin-top: 12px;
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: 16.5px;
+}
+
+.docs-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+  padding-top: clamp(32px, 5vw, 52px);
+  padding-bottom: clamp(52px, 8vw, 88px);
+}
+
+.toc { position: sticky; top: 24px; }
+.toc .idx-group {
+  color: var(--faint);
+  margin: 0 0 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+.toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: ch;
+}
+.toc li { counter-increment: ch; }
+.toc a {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  padding: 5px 0 5px 10px;
+  border-left: 2px solid transparent;
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.toc a::before {
+  content: counter(ch, decimal-leading-zero);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--faint);
+}
+.toc a:hover {
+  color: var(--ink);
+  border-left-color: var(--ink);
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+}
+.toc a[aria-current="true"] {
+  color: var(--ink);
+  /* sanguine tick — the active-nav annotation (rule 4) */
+  border-left-color: var(--mark);
+}
+.toc a[aria-current="true"]::before { color: var(--clay-ink); }
+
+.chapters { max-width: 70ch; }
+.chapter { scroll-margin-top: 24px; }
+.chapter + .chapter {
+  margin-top: clamp(44px, 6vw, 64px);
+  padding-top: clamp(44px, 6vw, 64px);
+  border-top: 1px solid var(--line);
+}
+.ch-kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.ch-kicker .no {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted); /* thin element — no clay, no mark (rule 1) */
+  letter-spacing: 0.14em;
+}
+.ch-kicker .rule { flex: 1; height: 1px; background: var(--line); }
+.chapter h2 { font-size: clamp(22px, 3vw, 27px); font-weight: 600; letter-spacing: -0.01em; }
+.chapter h2 a,
+.entry-head h2 a {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+.chapter h2 a:hover,
+.entry-head h2 a:hover {
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+}
+.chapter h2 a:hover::after,
+.entry-head h2 a:hover::after { content: " #"; color: var(--line); }
+.chapter h3 { font-size: 17.5px; font-weight: 600; margin-top: 34px; }
+
+.chapter p.body { margin-top: 16px; font-size: 15.5px; color: var(--muted); }
+.chapter p.body strong { color: var(--ink); font-weight: 600; }
+.chapter p.body code, .story code, .pro code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--shade);
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+}
+
+.example {
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+.example .exbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 8px 8px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.example .exbar .k { color: var(--faint); }
+.example pre {
+  margin: 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.story {
+  margin-top: 22px;
+  padding: 2px 0 2px 20px;
+  border-left: 2px solid var(--line);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted);
+}
+.story .k {
+  display: block;
+  font-style: normal;
+  color: var(--faint);
+  margin-bottom: 4px;
+}
+
+.pro {
+  margin-top: 22px;
+  padding: 14px 18px 16px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--clay); /* a clay area, like the defcard rule (rule 1) */
+  background: var(--card);
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.pro .k { display: block; color: var(--clay-ink); font-weight: 500; margin-bottom: 6px; }
+
+.xref {
+  margin-top: 28px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.xref a {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 12px;
+}
+.xref .arrow { color: var(--muted); }
+
+/* ---------- API reference page ---------- */
+.api-head { padding-top: clamp(40px, 6vw, 64px); padding-bottom: clamp(28px, 4vw, 40px); border-bottom: 1px solid var(--line); }
+.api-head h1 { font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.015em; }
+.api-head .eyebrow { margin-bottom: 14px; }
+.api-head .sec-lead { margin-top: 10px; }
+
+.api-layout {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+  padding-top: clamp(32px, 5vw, 52px);
+  padding-bottom: clamp(52px, 8vw, 88px);
+}
+.api-index {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.api-index .idx-group {
+  color: var(--faint);
+  margin: 0 0 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+.api-index .idx-group:not(:first-child) { margin-top: 22px; }
+.api-index a {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  padding: 4px 0 4px 10px;
+  border-left: 2px solid transparent;
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.api-index a:hover {
+  color: var(--ink);
+  border-left-color: var(--ink);
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+}
+
+/* entry — manual-page pattern */
+.entry { scroll-margin-top: 24px; }
+.entry + .entry { margin-top: clamp(44px, 6vw, 64px); padding-top: clamp(44px, 6vw, 64px); border-top: 1px solid var(--line); }
+.entry-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-bottom: 10px;
+}
+.entry-head h2 {
+  font-family: var(--mono);
+  font-size: clamp(19px, 2.6vw, 23px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.tags { display: flex; gap: 8px; }
+/* tag grounds — clay areas (rule 1); hierarchy by darkness, not hue */
+.tags span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--clay-ink);
+  border: 1px solid var(--line);
+  background: var(--clay-soft);
+  padding: 3px 8px;
+}
+.tags span.core {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff; /* 7.4:1 */
+}
+.entry .summary { font-size: 16.5px; color: var(--ink); max-width: 60ch; }
+.sig-wrap[data-pair] {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.sig-wrap[data-pair] > pre.sig {
+  margin-top: 0;
+}
+pre.sig {
+  margin: 18px 0 0;
+  padding: 14px 18px;
+  overflow-x: auto;
+  background: var(--shade);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--clay); /* clay area (rule 1) */
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+.entry .prose > p { margin-top: 18px; font-size: 15px; color: var(--muted); max-width: 66ch; }
+.entry .prose > p code, .entry .summary code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--shade);
+  border-radius: 2px;
+  padding: 1px 5px;
+}
+.entry .ex { margin-top: 22px; border: 1px solid var(--line); background: var(--card); }
+.entry .ex figcaption {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--faint);
+}
+.exbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* ---------- generated code blocks (Prism) ---------- */
+pre[class^="language-"],
+pre[class*=" language-"] {
+  margin: 0;
+  padding: 20px 22px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.entry .ex pre.code,
+.entry .ex[data-pair] > pre.language-typescript,
+.entry .ex[data-pair] > pre.language-rescript,
+.entry .ex[data-pair] > pre.language-res,
+.entry .ex[data-view] > pre.language-gherkin,
+.example > pre.code,
+.example[data-pair] > pre.language-typescript,
+.example[data-pair] > pre.language-rescript,
+.example[data-pair] > pre.language-res {
+  padding: 16px 18px;
+}
+
+/* Prism tokens — the bench's two metals on ink: steel keywords, verdigris
+   values, punctuation stepped back so identifiers carry the line */
+.token.keyword,
+.token.builtin,
+.token.class-name { color: var(--steel); }
+.token.string,
+.token.char,
+.token.number,
+.token.boolean,
+.token.constant,
+.token.attr-value { color: var(--verdigris); font-weight: 500; }
+.token.comment,
+.token.prolog,
+.token.doctype { color: var(--faint); font-style: italic; }
+.token.function,
+.token.function-variable { font-weight: 500; color: var(--mark-dim) }
+.token.operator,
+.token.punctuation { color: var(--muted); }
+/* Gherkin: Given/When/Then in steel (regular — atrule also catches the
+   word that follows), Feature/Scenario labels steel, titles carry weight,
+   example-table headers steel over verdigris cells */
+.token.atrule { color: var(--steel); }
+.token.important { color: var(--ink); font-weight: 600; }
+.token.variable { color: var(--verdigris); font-weight: 500; }
+.token.th { color: var(--steel); font-weight: 500; }
+.token.tag { color: var(--faint); font-style: italic; }
+
+/* ---------- ts | res toggle on paired examples ---------- */
+.lang-toggle {
+  appearance: none;
+  border: 1px solid var(--line);
+  margin: 0;
+  cursor: pointer;
+  background: transparent;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+}
+.lang-toggle .lt {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 4px 8px;
+}
+/* active pane — washed steel says TypeScript, washed porphyry says ReScript */
+html[data-lang="ts"] .lang-toggle .lt-ts {
+  background: var(--chip-ts);
+  color: var(--ink);
+}
+html[data-lang="res"] .lang-toggle .lt-res {
+  background: var(--chip-res);
+  color: var(--ink);
+}
+html[data-lang="ts"] [data-pair] > pre.language-rescript,
+html[data-lang="ts"] [data-pair] > pre.language-res {
+  display: none;
+}
+html[data-lang="res"] [data-pair] > pre.language-typescript {
+  display: none;
+}
+.sig-wrap[data-pair] > .lang-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* ---------- feature | steps toggle on contract figures ----------
+   Independent of the language toggle: the view picks the pane, and
+   inside the steps pane html[data-lang] still picks ts or res. */
+.entry .ex[data-view="feature"] > pre.language-typescript,
+.entry .ex[data-view="feature"] > pre.language-rescript,
+.entry .ex[data-view="feature"] > pre.language-res,
+.entry .ex[data-view="steps"] > pre.language-gherkin {
+  display: none;
+}
+
+/* ---------- docs/api responsive ---------- */
+@media (max-width: 820px) {
+  .docs-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .toc { position: static; }
+  .toc ol { column-count: 2; column-gap: 24px; }
+  .api-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .api-index { position: static; flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 2px 18px; }
+  .api-index .idx-group { border-bottom: none; margin: 0; width: 100%; }
+  .api-index .idx-group:not(:first-child) { margin-top: 10px; }
+  .api-index a { padding-left: 0; border-left: none; }
+}
+@media (max-width: 680px) {
+  .toc ol { column-count: 1; }
+}
+
+/* ---------- print / projection ---------- */
+@media print {
+  body { background: #fff; }
+  .langswitch, .viewswitch, .lang-toggle, .cta-row, .compass-mark { display: none; }
+  .codefig, .bridge, .example, .pro { break-inside: avoid; }
+}
