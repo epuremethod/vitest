@@ -19,17 +19,17 @@ import { expect } from "vitest";
 import { Given } from "vitest-bdd";
 import { makeScheduler } from "../feature/scheduler";
 
-Given("a card {string} with interval {number} days", ({ When, Then, And }, name: string, days: number) => {
+Given("a card {string} with interval {number} day(s)", ({ When, Then, And }, name: string, days: number) => {
   const scheduler = makeScheduler();
   const card = scheduler.add(name, { interval: days });
 
   When("I review {string} and pass", (n: string) => scheduler.review(n, "pass"));
   When("I review {string} and fail", (n: string) => scheduler.review(n, "fail"));
 
-  Then("{string} is scheduled {number} days out", (n: string, d: number) => {
+  Then("{string} is scheduled {number} day(s) out", (n: string, d: number) => {
     expect(scheduler.dueIn(n)).toBe(d);
   });
-  And("the interval of {string} is {number} day", (n: string, d: number) => {
+  And("the interval of {string} is {number} day(s)", (n: string, d: number) => {
     expect(scheduler.get(n).interval).toBe(d);
   });
 });
@@ -39,21 +39,23 @@ Given("a card {string} with interval {number} days", ({ When, Then, And }, name:
 // SchedulingSteps.res
 open VitestBdd
 
-given("a card {string} with interval {number} days", ({step}, name: string) => {
+given("a card {string} with interval {number} day(s)", ({step}, name: string) => {
   let scheduler = Scheduler.make()
   let _card = scheduler.add(name, ~interval=2.0)
 
   step("I review {string} and pass", n => scheduler.review(n, Pass))
   step("I review {string} and fail", n => scheduler.review(n, Fail))
 
-  step("{string} is scheduled {number} days out", (n, d: float) => {
+  step("{string} is scheduled {number} day(s) out", (n, d: float) => {
     expect(scheduler.dueIn(n)).toBe(d)
   })
-  step("the interval of {string} is {number} day", (n, d: float) => {
+  step("the interval of {string} is {number} day(s)", (n, d: float) => {
     expect(scheduler.get(n).interval).toBe(d)
   })
 })
 ```
+
+Nadia keeps `days` and `day` in the contract; Alice writes `day(s)` only in the binding patterns. The shorthand registers both spellings, so one definition follows the contract's singular and plural sentences without leaking implementation notation into the prose.
 
 `scheduler` is not global, not injected, not looked up: it is a local variable, and the steps see it because functions remember where they were born. Every dependency of the scenario is visible in one screenful, and "find usages" on `makeScheduler` answers the question a World never could.
 
