@@ -14,7 +14,7 @@ export type Context = Record<string, Step>;
 const builders: Record<string, (given: StepType, testContext: TestContext) => Promise<Runner>> = {};
 
 export function Given(key: string, build: (...params: any[]) => void) {
-  builders[normalize(key)] = async (given: StepType, testContext: TestContext) => {
+  const op = async (given: StepType, testContext: TestContext) => {
     const ops: Operations = {};
     const runner = {
       operation: (query: string) => {
@@ -28,12 +28,19 @@ export function Given(key: string, build: (...params: any[]) => void) {
     const ctx: Context = new Proxy(
       {},
       {
-        get: () => (key: string, op: Operation) => (ops[normalize(key)] = op),
+        get: () => (key: string, op: Operation) => {
+          for (const query of normalize(key)) {
+            ops[query] = op;
+          }
+        },
       },
     );
     await build(ctx, ...[...given.params, testContext]);
     return runner;
   };
+  for (const query of normalize(key)) {
+    builders[query] = op;
+  }
 }
 
 export function load(given: StepType, testContext: TestContext): Promise<Runner> {

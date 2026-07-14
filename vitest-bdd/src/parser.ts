@@ -4,6 +4,8 @@ import type { TestContext } from "vitest";
 
 import { load as loadRunner } from "./steps";
 
+const pluralRegex = /\(s\)($|\s)/;
+
 export type TestFile = {
   uri: string;
   text: string;
@@ -143,7 +145,7 @@ export function parseStep(keyword: string, text: string): Step {
       numbers.push(parseFloat(match));
       return "{number}";
     }),
-  );
+  )[0];
 
   const params: (number | string)[] = [];
   for (const match of query.matchAll(/\{(string|number)\}/g)) {
@@ -175,8 +177,13 @@ export function parseStep(keyword: string, text: string): Step {
   };
 }
 
-export function normalize(text: string): string {
-  return removeKeyword(text.toLocaleLowerCase()).trim().replace(/ an /g, " a ").replace(/ the /, " ");
+export function normalize(text: string): string[] {
+  const q = removeKeyword(text.toLocaleLowerCase()).trim().replace(/ an /g, " a ").replace(/ the /, " ");
+  if (pluralRegex.test(q)) {
+    // Plural form
+    return [q.replace("(s)", ""), q.replace("(s)", "s")];
+  }
+  return [q];
 }
 
 function removeKeyword(text: string): string {

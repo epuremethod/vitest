@@ -412,6 +412,8 @@ And finally, here are some nice extensions for VS Code that can support your BDD
 
 # Changelog
 
+- **1.1.0** (2026-07-14)
+  - Added support for plural idiom: "Given I tap 10 times" now matches "I tap {number} time(s)"
 - **1.0.1** (2026-04-29)
   - Fix rare bug in resolveId when loaded with cjs (not needed in our case).
 - **1.0.0** (2026-04-05)
