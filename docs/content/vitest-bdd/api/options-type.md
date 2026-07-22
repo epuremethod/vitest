@@ -16,7 +16,7 @@ All fields are optional; the defaults are the convention this documentation assu
 
 - `concurrent` (default `true`) — run scenarios concurrently. Safe because each scenario builds its own context; disable only for suites that share external state.
 - `gherkinExtensions` (default `[".feature"]`) — files parsed as pure Gherkin.
-- `markdownExtensions` (default `[".md", ".mdx", ".markdown"]`) — files scanned for `gherkin` code fences; see guide chapter [Contracts in the prose](docs.html#contracts-in-the-prose).
+- `markdownExtensions` (default `[".md", ".mdx", ".markdown"]`) — files scanned for `gherkin` code fences; see guide chapter [Contracts in the prose](guide.html#contracts-in-the-prose).
 - `stepsResolver` (default [stepsResolver](api.html#steps-resolver)) — how a feature file finds its steps.
 - `debug` (default `false`) — log the generated suite during compilation.
 

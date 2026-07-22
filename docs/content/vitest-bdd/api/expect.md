@@ -14,7 +14,7 @@ tags: []
 
 `expect` binds Vitest's own function — same behavior, same failure messages, same snapshot machinery — with a typed surface: the matcher must receive the same type as the asserted value. The available matchers are listed under [assertions](api.html#assertions-type); modifiers `not`, `resolves` and `rejects` chain as in Vitest.
 
-`resolves` and `rejects` return promise-based assertions. Await them — ReScript's type system makes an unawaited one a compile error when anything follows it, which is a small gift: the dangling-assertion bug class does not compile. See guide chapter [Vitest in ReScript](docs.html#vitest-in-rescript).
+`resolves` and `rejects` return promise-based assertions. Await them — ReScript's type system makes an unawaited one a compile error when anything follows it, which is a small gift: the dangling-assertion bug class does not compile. See guide chapter [Vitest in ReScript](guide.html#vitest-in-rescript).
 
 ```typescript
 import { expect } from "vitest";

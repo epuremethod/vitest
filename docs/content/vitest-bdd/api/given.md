@@ -12,7 +12,7 @@ signature:
 tags: []
 ---
 
-`Given` is the single entry point of a steps file. The pattern uses Cucumber expressions — `{string}` and `{number}` capture parameters — and the builder runs once per scenario, receiving the step-binding context first, then the captured parameters, then the Vitest `TestContext` last. Everything the scenario needs is created inside the builder, and every `When`/`Then` the builder registers closes over it — no world object, no shared state between scenarios. See [Step](api.html#step-type) for the context's shape, and guide chapter [Steps close over the world](docs.html#steps-close-over-the-world).
+`Given` is the single entry point of a steps file. The pattern uses Cucumber expressions — `{string}` and `{number}` capture parameters — and the builder runs once per scenario, receiving the step-binding context first, then the captured parameters, then the Vitest `TestContext` last. Everything the scenario needs is created inside the builder, and every `When`/`Then` the builder registers closes over it — no world object, no shared state between scenarios. See [Step](api.html#step-type) for the context's shape, and guide chapter [Steps close over the world](guide.html#steps-close-over-the-world).
 
 `(s)` at the end of a word expands one pattern into its singular and plural forms: `I count {number} time(s)` binds both `I count 1 time` and `I count 2 times`. It is matching shorthand, not agreement validation — either form accepts any captured number. Keep `(s)` in the steps file; the feature file remains ordinary prose.
 

@@ -31,7 +31,7 @@ shared:
           <a class="wordmark" href="./index.html" aria-label="vitest-bdd — home">{{wordmarkSvg}}vitest-bdd</a>
           <nav class="nav" aria-label="Site">
             <a href="./index.html">Home</a>
-            <a href="./docs.html"{{docsCurrentAttr}}>Docs</a>
+            <a href="./guide.html"{{docsCurrentAttr}}>Guide</a>
             <a href="./api.html"{{apiCurrentAttr}}>API</a>
             <a href="https://github.com/midasum/vitest-bdd">GitHub</a>
           </nav>
@@ -96,7 +96,7 @@ pages:
   guide:
     input:
       markdownDir: guide
-    output: "{{dist}}/docs.html"
+    output: "{{dist}}/guide.html"
     assets:
       copy:
         - from: index.html
@@ -110,7 +110,7 @@ pages:
       pageMain: |-
         <div class="docs-head">
           <div class="wrap">
-            <p class="eyebrow">Docs<span class="sep">·</span>vitest-bdd<span class="sep">·</span>Guided tour</p>
+            <p class="eyebrow">Guide<span class="sep">·</span>vitest-bdd<span class="sep">·</span>Guided tour</p>
             <h1>The Guide</h1>
             <p class="standfirst">A reading path through vitest-bdd, in order: why a contract must run, the shape of a feature file, steps as closures, the wiring into Vitest, tables and other languages, contracts inside prose, and writing Vitest in ReScript. Read it top to bottom once. When you need to look something up later, use the <a href="./api.html">API reference</a> instead — it is flat, complete, and made for that.</p>
           </div>

@@ -370,7 +370,7 @@ async function runConfigBuild(configPath, highlighter, md) {
   const apiDir = resolvePath(apiInput.markdownDir || "api", configDir);
   const guideDir = resolvePath(guideInput.markdownDir || "guide", configDir);
   const apiFile = resolvePath(apiPage.output || "../../dist/api.html", configDir);
-  const docsFile = resolvePath(guidePage.output || "../../dist/docs.html", configDir);
+  const docsFile = resolvePath(guidePage.output || "../../dist/guide.html", configDir);
 
   const errors = [];
   const [apiFiles, guideFiles] = await Promise.all([

@@ -12,7 +12,7 @@ signature:
 tags: []
 ---
 
-A data table reaches a step as raw rows of strings. `toRecords` reads the first row as field names and returns one record per remaining row — the shape assertions want when comparing against a list of domain objects. Values stay strings; parse them where the domain requires numbers or booleans. See also [toStrings](api.html#to-strings) and [toNumbers](api.html#to-numbers), and guide chapter [Tables and other tongues](docs.html#tables-and-other-tongues).
+A data table reaches a step as raw rows of strings. `toRecords` reads the first row as field names and returns one record per remaining row — the shape assertions want when comparing against a list of domain objects. Values stay strings; parse them where the domain requires numbers or booleans. See also [toStrings](api.html#to-strings) and [toNumbers](api.html#to-numbers), and guide chapter [Tables and other tongues](guide.html#tables-and-other-tongues).
 
 In the feature file the table sits under its step, header row first, and arrives as that step's last parameter — here both `Given` and `Then` receive one.
 

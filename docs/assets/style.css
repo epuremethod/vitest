@@ -472,6 +472,8 @@ pre.code {
 .standfirst a,
 .chapter p.body a,
 .entry .prose > p a,
+.entry .prose > ul a,
+.entry .prose > ol a,
 .xref a {
   color: var(--ink);
   text-decoration: underline;
@@ -482,6 +484,8 @@ pre.code {
 .standfirst a:hover,
 .chapter p.body a:hover,
 .entry .prose > p a:hover,
+.entry .prose > ul a:hover,
+.entry .prose > ol a:hover,
 .xref a:hover {
   text-decoration-color: var(--ink);
   text-decoration-thickness: 2px;
@@ -773,8 +777,8 @@ pre.sig {
   line-height: 1.6;
   white-space: pre-wrap;
 }
-.entry .prose > p { margin-top: 18px; font-size: 15px; color: var(--muted); max-width: 66ch; }
-.entry .prose > p code, .entry .summary code {
+.entry .prose > p, .entry .prose > ul, .entry .prose > ol { margin-top: 18px; font-size: 15px; color: var(--muted); max-width: 66ch; }
+.entry .prose > p code, .entry .prose > ul code, .entry .prose > ol code, .entry .summary code {
   font-family: var(--mono);
   font-size: 0.92em;
   background: var(--shade);

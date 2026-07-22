@@ -96,6 +96,7 @@ test("resolves variables before paths", async () => {
     assert.equal(config.pages.api.assets.copy[0].to, path.join(dist, "style.css"));
     assert.equal(config.pages.api.assets.copy[1].from, path.join(shared, "fonts"));
     assert.equal(config.pages.api.output, path.join(dist, "api.html"));
+    assert.equal(config.pages.guide.output, path.resolve(process.cwd(), "../dist/example/guide.html"));
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
