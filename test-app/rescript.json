@@ -9,5 +9,5 @@
     "in-source": true
   },
   "suffix": ".mjs",
-  "dependencies": ["vitest-bdd", "tilia"]
+  "dependencies": ["@epure/vitest", "tilia"]
 }

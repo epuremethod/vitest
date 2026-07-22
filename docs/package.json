@@ -1,5 +1,5 @@
 {
-  "name": "tilia-docs",
+  "name": "epure-vitest-docs",
   "private": true,
   "type": "module",
   "engines": {
@@ -8,7 +8,8 @@
   "scripts": {
     "build": "node src/build.mjs",
     "dev": "node src/dev.mjs",
-    "check": "node src/build.mjs"
+    "check": "node src/build.mjs",
+    "test": "node --test src/*.test.mjs"
   },
   "dependencies": {
     "chokidar": "^4.0.3",

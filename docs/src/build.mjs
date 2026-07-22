@@ -9,7 +9,7 @@ import { renderApiPage, renderDocsPage } from "./templates.mjs";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const contentDir = path.join(root, "content");
-const configFile = path.join(contentDir, "tilia/config.yaml");
+const configFile = path.join(contentDir, "epurejs/config.yaml");
 const sourceLabel = {
   api: "content/api/{{file}}",
   guide: "content/guide/{{file}}",

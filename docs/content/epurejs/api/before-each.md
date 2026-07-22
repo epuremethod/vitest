@@ -1,0 +1,28 @@
+---
+name: beforeEach
+slug: before-each
+kind: function
+module: react
+since: "0.6"
+sort: 140
+summary: Lifecycle hooks — beforeAll, beforeEach, afterEach, afterAll, onTestFinished.
+signature:
+  ts: "function beforeEach(fn: () => void | Promise<void>): void"
+  res: "let beforeEach: (string, 'a) => unit"
+tags: []
+---
+
+The four suite hooks are bound as in Vitest: `beforeAll`/`afterAll` bracket a suite, `beforeEach`/`afterEach` bracket every test. `onTestFinished` registers per-test cleanup from inside the test itself — the better home for teardown that belongs to one test's setup rather than the whole suite.
+
+Contracts rarely need any of these: a [Given](api.html#given) builder runs per scenario and *is* the setup, with cleanup in closure reach. Reach for hooks in unit suites that manage an external resource.
+
+```rescript
+open EpureVitest
+
+describe("Store", () => {
+  beforeEach("open db", () => Db.openInMemory())
+  afterEach("close db", () => Db.close())
+
+  it("persists a card", () => { /* … */ })
+})
+```

@@ -3,13 +3,7 @@
   "sources": [
     {
       "dir": "src",
-      "public": ["VitestBdd"],
-      "subdirs": true
-    },
-    {
-      "dir": "test",
-      "type": "dev",
-      "subdirs": true
+      "public": ["VitestBdd"]
     }
   ],
   "package-specs": {
@@ -17,6 +11,5 @@
     "in-source": true
   },
   "suffix": ".mjs",
-  "dependencies": [],
-  "dev-dependencies": []
+  "dependencies": ["@epure/vitest"]
 }

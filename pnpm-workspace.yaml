@@ -1,4 +1,5 @@
 packages:
+  - epure-vitest
   - vitest-bdd
   - test-app
   - docs

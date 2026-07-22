@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="@epure/vitest — contracts that run. Every .feature file is also a Vitest suite: plain Gherkin bound to typed steps, so what business signed is exactly what the tests measure.">
+<title>@epure/vitest — Contracts That Run</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b0402a' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='5.5'/%3E%3Cpath d='M12 1v22M1 12h22'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="wordmark" href="./index.html" aria-label="@epure/vitest — home">
+      <!-- registration crosshair — @epure/vitest's own mark, in sanguine -->
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="5.5"/>
+        <path d="M12 1v22M1 12h22"/>
+      </svg>
+      @epure/vitest
+    </a>
+    <nav class="nav" aria-label="Site">
+      <a href="./index.html" aria-current="page">Home</a>
+      <a href="./guide.html">Guide</a>
+      <a href="./api.html">API</a>
+      <a href="https://github.com/epuremethod/vitest">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <div class="eyerow">
+          <span class="stamp">Proof</span>
+          <p class="eyebrow">Gherkin, run by Vitest<span class="sep">·</span>TypeScript &amp; ReScript<span class="sep">·</span>MIT</p>
+        </div>
+        <h1 id="hero-title">Contracts That&nbsp;Run</h1>
+        <p class="lead">A BDD runner for Vitest. Every <code>.feature</code> file is also a test suite: plain Given/When/Then bound to typed steps, so what business signed is exactly what the tests measure — in watch mode and in CI.</p>
+        <p><strong>Renamed:</strong> <code>vitest-bdd</code> is now <code>@epure/vitest</code>.</p>
+        <div class="cta-row">
+          <a class="btn solid" href="./guide.html">Get Started</a>
+          <a class="btn" href="https://github.com/epuremethod/vitest">GitHub</a>
+        </div>
+        <p class="defcard">
+          <span class="term">compas</span> <span class="ipa">/kɔ̃·pa/</span> <span class="gram">n., m.</span> —
+          the divider. Steps the drawing off against the work.
+        </p>
+      </div>
+
+      <div class="code-slot">
+        <!-- a wing compass mid-measure: pivot knob, spread legs,
+             slotted wing with its thumbscrew, one point planted
+             under the card's corner, the other scribing an arc -->
+        <svg class="compass-mark" viewBox="0 0 260 330" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <!-- pivot knob -->
+          <circle cx="150" cy="38" r="15"/>
+          <circle cx="150" cy="38" r="5"/>
+          <!-- left leg, point planted under the card -->
+          <path d="M140 52 58 292M151 58 63 294M58 292l5 2"/>
+          <!-- right leg -->
+          <path d="M160 52l82 240M149 58l88 236M242 292l-5 2"/>
+          <!-- slotted wing, rounded end -->
+          <path d="M102 172A140 140 0 0 0 226 157"/>
+          <path d="M107 158A126 126 0 0 0 219 146"/>
+          <path d="M102 172 107 158"/>
+          <path d="M226 157A7 7 0 0 0 219 146"/>
+          <!-- thumbscrew where the wing passes the leg -->
+          <circle cx="197" cy="158" r="7"/>
+          <path d="M204 158h12"/>
+          <rect x="216" y="150" width="9" height="16"/>
+          <path d="M219 153v10M222 153v10"/>
+          <!-- the scribed arc -->
+          <path d="M235 250A180 180 0 0 1 239 315" stroke-dasharray="2 8"/>
+        </svg>
+        <figure class="codefig" data-lang="feature" id="hero-code">
+          <figcaption class="codebar">
+            <span class="k figlabel">The contract</span>
+            <div class="langswitch" role="group" aria-label="Contract pane">
+              <button type="button" data-lang="feature" aria-pressed="true">feature</button>
+              <button type="button" data-lang="steps" aria-pressed="false">steps</button>
+            </div>
+          </figcaption>
+          <pre class="code code-feature"><code><span class="tk">Feature</span>: Calculator
+
+  <span class="tk">Scenario</span>: Add two numbers
+    <span class="tk">Given</span> I have a <span class="ts">"basic"</span> calculator
+    <span class="tk">When</span> I add <span class="ts">1</span> and <span class="ts">2</span>
+    <span class="tk">Then</span> the result is <span class="ts">3</span>
+
+  <span class="tk">Scenario</span>: Float calculator
+    <span class="tk">Given</span> I have a <span class="ts">"float"</span> calculator
+    <span class="tk">When</span> I divide <span class="ts">1</span> by <span class="ts">2</span>
+    <span class="tk">Then</span> the result is <span class="ts">0.5</span></code></pre>
+          <pre class="code code-steps"><code><span class="tf">Given</span>(<span class="ts">"I have a {string} calculator"</span>, (name) =&gt; {
+  <span class="tk">const</span> calculator = <span class="tf">makeCalculator</span>(name)
+
+  <span class="tf">When</span>(<span class="ts">"I add {number} and {number}"</span>, calculator.add)
+
+  <span class="tf">Then</span>(<span class="ts">"the result is {number}"</span>, (n: number) =&gt; {
+    <span class="tf">expect</span>(calculator.result.value).<span class="tf">toBe</span>(n)
+  })
+})</code></pre>
+          <div class="codefoot"><code><span class="ps1">$</span> npm install -D @epure/vitest</code></div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="why-title">
+    <div class="wrap">
+      <header class="sec-head">
+        <h2 id="why-title">Why @epure/vitest</h2>
+        <p class="sec-lead">A spec nobody executes is an opinion. @epure/vitest makes every feature file a Vitest suite — what business signed is exactly what the tests measure.</p>
+      </header>
+
+      <div class="props">
+        <article class="prop">
+          <p class="pid">1.1</p>
+          <div class="glyph" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="7" y="5" width="18" height="22"/>
+              <path d="M11 11h10M11 15h10M11 19h6"/>
+              <path d="M11 23l2 2 4-4"/>
+            </svg>
+          </div>
+          <h3>The contract reads like the domain</h3>
+          <p>Plain Gherkin translated in memory by Vite: Given/When/Then in language the people who own the rules can read — and sign, with no generated test file to drift.</p>
+        </article>
+
+        <article class="prop">
+          <p class="pid">1.2</p>
+          <div class="glyph" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="12" width="24" height="9"/>
+              <path d="M8 12v4M12 12v6M16 12v4M20 12v6M24 12v4"/>
+            </svg>
+          </div>
+          <h3>Every scenario is a measurement</h3>
+          <p>Each run steps the drawing off against the work. When reality drifts, the failure points at the exact clause: expected 3, measured 1002.</p>
+        </article>
+
+        <article class="prop">
+          <p class="pid">1.3</p>
+          <div class="glyph" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="16" cy="6" r="2.5"/>
+              <path d="M13 8 7 26M19 8l6 18"/>
+              <path d="M12 17a9 9 0 0 0 8 0"/>
+            </svg>
+          </div>
+          <h3>Steps are closures</h3>
+          <p>Given builds the context; When and Then close over it in plain TypeScript or ReScript — no shared world, so scenarios run concurrently under Vitest.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="The épure method">
+    <div class="wrap">
+      <aside class="bridge">
+        <span class="reg tl" aria-hidden="true"></span>
+        <span class="reg br" aria-hidden="true"></span>
+        <span class="k">Sheet A-03 · Proof</span>
+        <p>@epure/vitest is the proof sheet of <strong>épure</strong> — a method for AI-assisted development in organizations that cannot afford surprises. Software, drawn before it is built.</p>
+        <a class="bridge-link" href="https://epuremethod.com">Read the method <span class="arrow">↗</span></a>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="fcell"><span class="lbl">Package</span><span class="val"><a href="https://www.npmjs.com/package/@epure/vitest">@epure/vitest on npm</a></span></div>
+    <div class="fcell"><span class="lbl">Source</span><span class="val"><a href="https://github.com/epuremethod/vitest">github.com/epuremethod/vitest</a></span></div>
+    <div class="fcell"><span class="lbl">License</span><span class="val">MIT</span></div>
+    <div class="fcell"><span class="lbl">Method</span><span class="val"><a href="https://epuremethod.com">épure</a></span></div>
+    <div class="fcell"><span class="lbl">Site</span><span class="val">epurejs.dev</span></div>
+  </div>
+</footer>
+
+<script>
+  // feature | steps toggle on the hero code figure
+  (function () {
+    var fig = document.getElementById('hero-code');
+    fig.querySelectorAll('.langswitch button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        fig.setAttribute('data-lang', btn.dataset.lang);
+        fig.querySelectorAll('.langswitch button').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b === btn));
+        });
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

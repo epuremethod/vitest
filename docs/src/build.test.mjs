@@ -34,13 +34,21 @@ test("reports duplicate names in same module", () => {
   assert.deepEqual(errors, ['content/api/make-2.md: duplicate name "make" in module "core"']);
 });
 
-test("loads tilia config from content folder", async () => {
+test("loads epure Vitest config from content folder", async () => {
   const config = await loadConfig();
 
-  assert.equal(config.var.project, "tilia");
-  assert.equal(config.pages.api.input.markdownDir, path.resolve(process.cwd(), "content/tilia/api"));
-  assert.equal(config.pages.guide.input.markdownDir, path.resolve(process.cwd(), "content/tilia/guide"));
-  assert.equal(config.pages.api.output, path.resolve(process.cwd(), "dist/tilia/api.html"));
+  assert.equal(config.var.project, "epurejs");
+  assert.equal(config.pages.api.input.markdownDir, path.resolve(process.cwd(), "content/epurejs/api"));
+  assert.equal(config.pages.guide.input.markdownDir, path.resolve(process.cwd(), "content/epurejs/guide"));
+  assert.equal(config.pages.api.output, path.resolve(process.cwd(), "../dist/api.html"));
+  assert.equal(
+    config.pages.api.assets.copy.some(
+      ({ from, to }) =>
+        from === path.resolve(process.cwd(), "../epure-vitest/llms.txt") &&
+        to === path.resolve(process.cwd(), "../dist/llms.txt"),
+    ),
+    true,
+  );
 });
 
 test("rejects invalid config format", async () => {
@@ -102,37 +110,26 @@ test("resolves variables before paths", async () => {
   }
 });
 
-test("loads query config via base", async () => {
-  const file = path.resolve(process.cwd(), "content/query/config.yaml");
-  const config = await loadConfig(file);
-
-  assert.equal(config.var.project, "query");
-  assert.equal(config.pages.api.input.markdownDir, path.resolve(process.cwd(), "content/query/api"));
-  assert.equal(config.pages.guide.input.markdownDir, path.resolve(process.cwd(), "content/query/guide"));
-  assert.equal(config.pages.api.input.glob, "*.md");
-  assert.equal(config.pages.api.output, path.resolve(process.cwd(), "dist/query/api.html"));
-});
-
 test("deep merges literals over base", async () => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "tilia-config-"));
+  const dir = await mkdtemp(path.join(os.tmpdir(), "epure-vitest-config-"));
   try {
-    const base = path.resolve(process.cwd(), "content/tilia/config.yaml");
+    const base = path.resolve(process.cwd(), "content/epurejs/config.yaml");
     const file = path.join(dir, "config.yaml");
     await writeFile(
       file,
       [
         `base: "${base}"`,
         "var:",
-        "  project: query",
+        "  project: example",
         "shared:",
         "  literals:",
-        "    moduleLabelCore: Query",
+        "    moduleLabelCore: Contracts",
       ].join("\n")
     );
 
     const config = await loadConfig(file);
-    assert.equal(config.shared.literals.moduleLabelCore, "Query");
-    assert.equal(config.shared.literals.moduleLabelReact, "React");
+    assert.equal(config.shared.literals.moduleLabelCore, "Contracts");
+    assert.equal(config.shared.literals.moduleLabelReact, "Vitest");
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
@@ -141,53 +138,52 @@ test("deep merges literals over base", async () => {
 test("finds all project configs in content", async () => {
   const files = await findConfigs();
   const rel = files.map((file) => path.relative(process.cwd(), file));
-  assert(rel.includes("content/tilia/config.yaml"));
-  assert(rel.includes("content/query/config.yaml"));
+  assert.deepEqual(rel, ["content/epurejs/config.yaml"]);
 });
 
 test("resolves child file paths before merge", async () => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "tilia-config-"));
+  const dir = await mkdtemp(path.join(os.tmpdir(), "epure-vitest-config-"));
   try {
-    const base = path.resolve(process.cwd(), "content/tilia/config.yaml");
+    const base = path.resolve(process.cwd(), "content/epurejs/config.yaml");
     const file = path.join(dir, "config.yaml");
     await writeFile(
       file,
       [
         `base: "${base}"`,
         "var:",
-        "  project: query",
+        "  project: example",
         "pages:",
         "  api:",
         "    output: ./out/{{project}}/api.html",
       ].join("\n")
     );
     const config = await loadConfig(file);
-    assert.equal(config.pages.api.output, path.resolve(dir, "out/query/api.html"));
+    assert.equal(config.pages.api.output, path.resolve(dir, "out/example/api.html"));
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
 });
 
 test("deep merges nested page template keys", async () => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "tilia-config-"));
+  const dir = await mkdtemp(path.join(os.tmpdir(), "epure-vitest-config-"));
   try {
-    const base = path.resolve(process.cwd(), "content/tilia/config.yaml");
+    const base = path.resolve(process.cwd(), "content/epurejs/config.yaml");
     const file = path.join(dir, "config.yaml");
     await writeFile(
       file,
       [
         `base: "${base}"`,
         "var:",
-        "  project: query",
+        "  project: example",
         "pages:",
         "  guide:",
         "    templates:",
-        "      pageMain: <div class=\"docs-head\">Query docs</div>",
+        "      pageMain: <div class=\"docs-head\">Example docs</div>",
       ].join("\n")
     );
     const config = await loadConfig(file);
 
-    assert.equal(config.pages.guide.templates.pageMain, '<div class="docs-head">Query docs</div>');
+    assert.equal(config.pages.guide.templates.pageMain, '<div class="docs-head">Example docs</div>');
     assert.equal(config.pages.guide.templates.tocItem, '<li><a href="#{{slug}}">{{title}}</a></li>');
     assert.equal(config.pages.guide.templates.chapter.includes("{{bodyHtml}}"), true);
   } finally {
@@ -196,7 +192,7 @@ test("deep merges nested page template keys", async () => {
 });
 
 test("renders guide body when pageMain omits slots", async () => {
-  const config = await loadConfig(path.resolve(process.cwd(), "content/query/config.yaml"));
+  const config = await loadConfig(path.resolve(process.cwd(), "content/epurejs/config.yaml"));
   const html = renderDocsPage({
     config,
     chapters: [

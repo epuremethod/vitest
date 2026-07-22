@@ -1,4 +1,4 @@
-open VitestBdd
+open EpureVitest
 
 describe("ReScript tests and source maps", () => {
   it("should add two numbers", () => {

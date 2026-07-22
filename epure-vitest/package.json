@@ -1,0 +1,93 @@
+{
+  "name": "@epure/vitest",
+  "version": "0.0.0",
+  "description": "Gherkin test runner for Vitest",
+  "homepage": "https://epurejs.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/epuremethod/vitest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/epuremethod/vitest/issues"
+  },
+  "keywords": [
+    "vitest",
+    "bdd",
+    "gherkin",
+    "cucumber",
+    "test-runner",
+    "vitest-plugin",
+    "step-definitions",
+    "feature-files",
+    "rescript",
+    "typescript",
+    "testing"
+  ],
+  "author": "Gaspard Anna Bucher <g.a.bucher@midasum.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./runtime": {
+      "types": "./dist/runtime.d.ts",
+      "import": "./dist/runtime.js",
+      "require": "./dist/runtime.cjs"
+    },
+    "./rescript.json": "./rescript.json",
+    "./src/*": "./src/*"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "res:build": "rescript",
+    "res:dev-build": "rescript -with-deps",
+    "res:clean": "rescript clean",
+    "res:dev": "rescript -w",
+    "clean": "rimraf dist",
+    "dev": "pnpm bundle --watch",
+    "build": "pnpm bundle",
+    "prebuild": "pnpm clean && rescript",
+    "bundle": "tsup",
+    "pretest": "rescript",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepack": "pnpm build && clean-package",
+    "postpack": "clean-package restore"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "clean-package": "^2.2.0",
+    "rescript": "12.2.0",
+    "rimraf": "^5.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.3"
+  },
+  "dependencies": {
+    "@cucumber/gherkin": "^32.1.2",
+    "@cucumber/messages": "^27.2.0",
+    "source-map": "^0.7.6"
+  },
+  "peerDependencies": {
+    "vite": "*"
+  },
+  "clean-package": {
+    "remove": [
+      "scripts",
+      "devDependencies",
+      "clean-package"
+    ]
+  }
+}

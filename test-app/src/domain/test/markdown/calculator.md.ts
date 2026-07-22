@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import { Given } from "vitest-bdd";
+import { Given } from "@epure/vitest";
 import { makeCalculator } from "../../feature/calculator";
 
 Given("I have a {string} calculator", ({ When, Then, And }, name: string) => {

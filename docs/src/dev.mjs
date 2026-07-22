@@ -9,7 +9,7 @@ const liveServer = require("live-server");
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
-const distDir = path.join(root, "dist");
+const distDir = path.resolve(root, "../dist");
 const port = 4175;
 
 async function rebuild() {

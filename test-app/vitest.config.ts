@@ -1,11 +1,11 @@
-import {existsSync} from "node:fs";
+import { existsSync } from "node:fs";
 import tsconfigPaths from "vite-tsconfig-paths";
-import {stepsResolver as originalStepsResolver, vitestBdd} from "vitest-bdd";
-import {defineConfig} from "vitest/config";
+import { epureVitest, stepsResolver as originalStepsResolver } from "@epure/vitest";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [
-    vitestBdd({
+    epureVitest({
       stepsResolver: testStepsResolver,
     }),
     tsconfigPaths(),

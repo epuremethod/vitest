@@ -5,12 +5,5 @@ export default defineConfig({
   format: ["esm", "cjs"],
   dts: true,
   sourcemap: true,
-  splitting: false,
-  external: [
-    "vitest",
-    "vite",
-    // Add any other external dependencies that should not be bundled
-  ],
-  // This ensures external dependencies are not bundled
-  noExternal: [],
+  external: ["@epure/vitest"],
 });

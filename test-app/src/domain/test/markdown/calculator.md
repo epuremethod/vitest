@@ -1,6 +1,6 @@
 # This is a normal markdown file
 
-This is a markdown specification document example. The document serves both documentation, specification and testing purposes. **vitest-bdd** parses the `gherkin` code fences and compiles them into a test suite.
+This is a markdown specification document example. The document serves both documentation, specification and testing purposes. **@epure/vitest** parses the `gherkin` code fences and compiles them into a test suite.
 
 ## Calculator setup
 

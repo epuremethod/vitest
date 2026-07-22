@@ -1,448 +1,118 @@
-# vitest-bdd
+# @epure/vitest
 
-Gherkin test runner for vitest.
+Gherkin contracts run by Vitest, with typed steps for TypeScript and ReScript.
 
-The goal is to provide a simple and intuitive way to write tests for your
-application. Use with [vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer) and [Gherkin](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) extensions for VS-Code.
+> `@epure/vitest` is the new name of `vitest-bdd`. Existing APIs remain as
+> deprecated aliases, but new code should use the names shown below.
 
-![vitest-bdd banner](https://raw.githubusercontent.com/midasum/vitest-bdd/refs/heads/main/misc/vitest-bdd.jpg)
+- [Guide](https://epurejs.dev/guide.html)
+- [API reference](https://epurejs.dev/api.html)
+- [npm](https://www.npmjs.com/package/@epure/vitest)
+- [épure method](https://epuremethod.com)
 
-You can also write tests in Markdown with Gherkin code blocks for Spec Driven Development:
+## Install
 
-<img width="514" height="241" alt="image" src="https://github.com/user-attachments/assets/eb0372f2-fa09-439b-add1-bff5bed200d5" />
-
-Tests can run in parallel (no shared state) and are fast and hot reloadable.
-
-**Features**
-
-- **write with Gherkin, execute with vitest !**
-- Gherkin block inside markdown
-- ReScript step definitions and full bindings for vitest
-- async tests
-- concurrent testing
-- failed tests in steps definitions and Gherkin
-- supports number, string and table parameters
-- steps are explicitly linked to your context (easy to trace usage)
-- supports "Background"
-- ESM and CJS projects support
-- Gherkin parsing with [@cucumber/gherkin](https://github.com/cucumber/gherkin).
-
-## Usage
-
-### Install
-
-```
-pnpm i --save-dev vitest-bdd
+```sh
+pnpm add --save-dev @epure/vitest vitest
 ```
 
-### Setup
-
-Create a vitest config file
+## Configure Vitest
 
 ```ts
 // vitest.config.ts
-import { defineConfig } from 'vitest/config'
-import { vitestBdd } from 'vitest-bdd'
+import { epureVitest } from "@epure/vitest";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [vitestBdd()],
+  plugins: [epureVitest()],
   test: {
-    include: ['**/*.feature', '**/*.spec.ts', '**/*.mdx']
-  }
-})
+    include: ["**/*.feature", "**/*.md", "**/*.spec.ts"],
+  },
+});
 ```
 
-### Options
+`epureVitest` translates feature files and Gherkin code fences in Markdown into
+Vitest suites in memory. It does not write generated test files to disk.
 
-Options are passed as an object to the vitestBdd function. The default options are:
-
-```ts
-{
-  debug: false,
-  concurrent: true,
-  markdownExtensions: [".md", ".mdx", ".markdown"],
-  gherkinExtensions: [".feature"],
-  stepsResolver: stepsResolver,
-}
-```
-
-And the default stepsResolver function is below. This resulver would find the following files for a "./test/foobar.feature" file:
-
-- `./test/foobar.feature.ts`
-- `./test/foobar.feature.js`
-- ... etc
-- `./test/foobar.steps.ts`
-- `./test/foobar.steps.js`
-- ... etc
-- `./test/foobarSteps.ts`
-- `./test/foobarSteps.js`
-- ... etc
-
-The last setting helps for ReScript users to mach `./test/Foobar.feature` with `./test/FoobarSteps.res` steps files.
-
-```ts
-function baseResolver(path: string): string | null {
-  for (const ext of [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".res.mjs", ".res.jsx", ".res.tsx"]) {
-    const p = `${path}${ext}`
-    if (existsSync(p)) {
-      return p
-    }
-  }
-  return null
-}
-
-export function stepsResolver(path: string): string | null {
-  // Resolves to a specific steps file
-  // from /foo/bar.feature
-  // to   /foo/bar.feature[.ts|.js|...]
-  // or   /foo/bar.steps[.ts|.js|...]
-  // or   /foo/barSteps[.ts|.js|...]
-  for (const r of ['.feature', '.steps', 'Steps']) {
-    const p = baseResolver(path.replace(/\.feature$/, r))
-    if (p) {
-      return p
-    }
-  }
-  // Resolves to a common steps file in the directory:
-  // from /foo/bar.feature
-  // to   /foo/steps[.ts|.js|...]
-  return baseResolver(join(basename(path), 'steps'))
-}
-```
-
-```ts
-// vitest.config.ts
-import { defineConfig } from 'vitest/config'
-import { vitestBdd } from 'vitest-bdd'
-
-export default defineConfig({
-  plugins: [vitestBdd({ markdownExtensions: ['.mdx', '.text'] })],
-  test: {
-    include: ['**/*.feature', '**/*.spec.ts', '**/*.mdx', '**/*.text']
-  }
-})
-```
-
-### Describe your features
-
-Define your feature in a file with the `.feature` extension:
+## Write a contract
 
 ```gherkin
-# src/domain/test/calculator.feature
+# calculator.feature
 Feature: Calculator
 
   Scenario: Add two numbers
-    Given I have a "basic" calculator
+    Given I have a calculator
     When I add 1 and 2
     Then the result is 3
-
-  Scenario: Advanced calculator
-    Given I have an "rpn" calculator
-    When I enter 1
-    And I enter 2
-    And I divide
-    Then the result is 0.5
 ```
 
-Create a steps file with `.feature.ts` extension (and exact same name as
-the feature file):
+Place its steps beside it:
 
 ```ts
-// src/domain/test/calculator.feature.ts
-import { type Signal } from 'tilia'
-import { expect } from 'vitest'
-import { Given, type Step } from 'vitest-bdd'
-import { makeCalculator } from '../feature/calculator'
+// calculator.feature.ts
+import { Given } from "@epure/vitest";
+import { expect } from "vitest";
 
-// You can reuse steps in multiple contexts
-// Here anything that has a result value.
-function resultAssertions(Then: Step, calculator: { result: Signal<number> }) {
-  // We define an async step, just to look cool 😎.
-  Then('the result is {number}', async (n: number) => {
-    await calculator.proccessBigComputation()
-    expect(calculator.result.value).toBe(n)
-  })
-}
+Given("I have a calculator", ({ When, Then }) => {
+  let result = 0;
 
-// You can use any variable name instead of When, And, and Then to match the
-// language of the Gherkin messages, such as { Quand, Alors, Et }, etc. We show
-// the code in an async situation (because it's the most difficult to handle).
-// The last parameter is the test context (vitest.TestContext).
-Given(
-  'I have a {string} calculator',
-  async ({ When, And, Then }, mode, _testContext) => {
-    switch (mode) {
-      case 'basic': {
-        const calculator = basicCalculator()
-        When('I add {number} and {number}', calculator.add)
-        And('I subtract {number} and {number}', calculator.subtract)
-        And('I multiply {number} by {number}', calculator.multiply)
-        And('I divide {number} by {number}', calculator.divide)
-        resultAssertions(Then, calculator)
-        break
-      }
-      case 'rpn': {
-        const calculator = rpnCalculator()
-        When('I enter {number}', calculator.enter)
-        And('I enter {number}', calculator.enter)
-        And('I divide', calculator.divide)
-        resultAssertions(Then, calculator)
-        break
-      }
-      default:
-        throw new Error(`Unknown calculator type "${type}"`)
-    }
-  }
-)
+  When("I add {number} and {number}", (a: number, b: number) => {
+    result = a + b;
+  });
+
+  Then("the result is {number}", (expected: number) => {
+    expect(result).toBe(expected);
+  });
+});
 ```
 
-For ReScript, the bindings are a little bit simpler without the possibility to rename the "step" function.
+Each `Given` builder creates private scenario state. Its `When`, `Then`, and
+other named operations close over that state, so scenarios can run
+concurrently without a shared World.
 
-Please note that due to limitations with the type system, we cannot have multiple arguments for "Given" in rescript. You need to add a step for extra parameters or use a table.
+## ReScript
+
+Open the canonical `EpureVitest` module:
 
 ```rescript
-// src/domain/test/CalculatorSteps.res
-open VitestBdd
+open EpureVitest
 
-// To show assertion reuse (could be just added in the given block).
-let resultAssertions = ({ step }, calculator) => {
-  // We define an async step, just to look cool 😎 (again).
-  step("the result is {number}", async (n: number) => {
-    await calculator.proccessBigComputation()
-    expect(calculator.result.value).toBe(n)
+given("I have a calculator", ({step}, _params) => {
+  let result = ref(0)
+
+  step("I add {number} and {number}", (a, b) => {
+    result.contents = a + b
   })
-}
 
-given("I have a {string} calculator", async ({ step }, ctype) => {
-  switch ctype {
-  | "basic" => {
-    let calculator = basicCalculator()
-    step("I add {number} and {number}", calculator.add)
-    step("I subtract {number} and {number}", calculator.subtract)
-    step("I multiply {number} by {number}", calculator.multiply)
-    step("I divide {number} by {number}", calculator.divide)
-    resultAssertions(step, calculator)
-  }
-  | "rpn": {
-    let calculator = rpnCalculator()
-    step("I enter {number}", calculator.enter)
-    step("I enter {number}", calculator.enter)
-    step("I divide", calculator.divide)
-    resultAssertions(step, calculator)
-  }
-})
-```
-
-### Reuse steps
-
-You can reuse steps in multiple contexts. For example, a preference manager
-could implement the interface `Form` (to access and set values) and you can
-reuse the form steps:
-
-```ts
-// src/domain/test/preference-manager.feature.ts
-import { formSteps } from '@steps/form'
-
-Given('I have a preference manager', ({ Step }) => {
-  const preferenceManager = makePreferenceManager()
-  formSteps(Step, preferenceManager)
-})
-```
-
-### Gherkin in Markdown
-
-**vitest-bdd** parses the `gherkin` code fences and compiles them into a test suite.
-
-Example: `src/domain/test/some.md`
-
-````markdown
-### Basic calculator
-
-```gherkin
-Feature: Calculator in md
-
-Background:
-  Given I have a "basic" calculator
-  Then the title is "basic"
-```
-
-Some other markdown that does nothing.
-
-## Basic operations
-
-```gherkin
-Scenario: Add two numbers
-  When I add 1 and 2
-  Then the result is 4
-
-Scenario: Advanced calculator
-  When I divide 1 by 2
-  Then the result is 0.5
-```
-
-And this is some more markdown.
-````
-
-Define steps in `src/domain/test/some.md.ts`
-
-### Gherkin Table
-
-`src/domain/test/tabular.feature`
-
-```gherkin
-Feature: Table
-
-  Background:
-    Given I have a table
-      | firstName | lastName | isActive |
-      | Charlie   | Smith    | true     |
-      | Bob       | Johnson  | false    |
-      | Alice     | Williams | true     |
-
-  Scenario: Sort by name
-    When I sort by "lastName"
-    Then the table is
-      | firstName | lastName | isActive |
-      | Bob       | Johnson  | false    |
-      | Charlie   | Smith    | true     |
-      | Alice     | Williams | true     |
-# etc
-```
-
-```ts
-// src/domain/test/tabular.feature.ts
-import { Given, Then, When, toRecords } from 'vitest-bdd'
-import { makeTable } from '../feature/table'
-
-Given('I have a table', ({ When, Then }, data) => {
-  // data : User[]
-  const table = makeTable(data)
-
-  When('I sort by {string}', table.sort)
-  Then('the table is', data => {
-    expect(table.list).toEqual(toRecords(data))
+  step("the result is {number}", expected => {
+    expect(result.contents).toBe(expected)
   })
 })
 ```
 
-You can also use `toNumbers` or `toStrings` to convert the first column of a
-table to a list of numbers or strings.
+The package also provides typed Vitest suites, hooks, modes, and assertions.
+See the [ReScript guide](https://epurejs.dev/guide.html#vitest-in-rescript).
 
-## Non-english support
+## Migration from vitest-bdd
 
-You can write your tests in any language supported by Cucumber (around 40).
+| Former name | Canonical name |
+| --- | --- |
+| package `vitest-bdd` | package `@epure/vitest` |
+| `vitestBdd()` | `epureVitest()` |
+| `VitestBddOptions` | `EpureVitestOptions` |
+| ReScript module `VitestBdd` | ReScript module `EpureVitest` |
 
-```gherkin
-# language: fr
-# /some/feature/calculator.feature
-# language: fr
-Fonctionnalité: Calculatrice
+The former TypeScript names emit deprecation guidance, and the former ReScript
+module emits a compiler/editor deprecation warning.
 
-  Scénario: Addition de deux nombres
-    Soit une calculatrice
-    Quand j'ajoute 15 et 10
-    Alors le résultat doit être 25
+## Development
 
-  Scénario: Addition de nombres négatifs
-    Soit une calculatrice
-    Quand j'ajoute -15 et -10
-    Alors le résultat doit être -25
-
-  Scénario: Soustraction de deux nombres
-    Soit une calculatrice
-    Quand je soustrais 5 à 12
-    Alors le résultat doit être 7
+```sh
+pnpm install
+pnpm build
+pnpm test
+pnpm --filter epure-vitest-docs check
 ```
 
-And the steps file:
-
-```ts
-// /some/feature/calculator.feature.ts
-import { expect } from 'vitest'
-import { Given } from 'vitest-bdd'
-import { makeCalculator } from '../feature/calculator'
-
-Soit('un calculator', ({ Quand, Alors }) => {
-  const calculator = makeCalculator()
-  Quand("j'ajoute {number} et {number}", calculator.add)
-  Quand('je soustrais {number} à {number}', calculator.subtract)
-
-  Alors('le résultat doit être {number}', (expected: string) => {
-    expect(calculator.result.value).toBe(expected)
-  })
-})
-```
-
-Don't forget to update some vscode settings (if you use the cucumber autocomplete extension for VS Code):
-
-```json
-// .vscode/settings.json
-{
-  "workbench.iconTheme": "diagonal-architecture-light-icon-theme",
-  "cucumberautocomplete.steps": [
-    "*/src/domain/test/**/*.feature.ts",
-    "*/src/domain/test/**/*Steps.res" // This is for ReScript
-  ],
-  "cucumberautocomplete.formatConfOverride": {
-    "Fonctionnalité": 0,
-    "Scénario": 1,
-    "Soit": 2,
-    "Quand": 2,
-    "Alors": 2
-  },
-  "cucumberautocomplete.strictGherkinCompletion": true,
-  "cucumberautocomplete.smartSnippets": true,
-  "cucumberautocomplete.syncfeatures": "src/domain/test/**/*.feature"
-}
-```
-
-And finally, here are some nice extensions for VS Code that can support your BDD journey:
-
-- The [Cucumber auto-complete](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) extension adds syntax support and auto-complete for Gherkin.
-- The [diagonal architecture](https://marketplace.visualstudio.com/items?itemName=midasum.diagonal-architecture) extension helps structure projects and has icons for `.feature` and `.feature.ts`.
-
-```json
-{
-  "recommendations": [
-    "midasum.diagonal-architecture",
-    "alexkrechik.cucumberautocomplete"
-  ]
-}
-```
-
-# Changelog
-
-- **1.1.0** (2026-07-14)
-  - Added support for plural idiom: "Given I tap 10 times" now matches "I tap {number} time(s)"
-- **1.0.1** (2026-04-29)
-  - Fix rare bug in resolveId when loaded with cjs (not needed in our case).
-- **1.0.0** (2026-04-05)
-  - Upgrade tests to ReScript 12, release stable v1
-- **0.6.2** (2025-12-18)
-  - Add default support for "tsx" and "jsx" step file discovery
-- **0.6.1** (2025-12-18)
-  - Removed "exports" to fix uses for ReScript users with different suffix settings
-- **0.6.0** (2025-09-01)
-  - Add support for table parsing (toRecords, toNumbers, toStrings)
-  - Add `concurrent` option (true by default)
-  - Add test context as last parameter to given step
-  - Add full bindings for vitest assertions in ReScript
-  - Fix bundling to not include external dependencies (this created issues with concurrency and testContext)
-- **0.5.1** (2025-08-28)
-  - Remove support for arrays in tests (accidental breaking change)
-- **0.5.0** (2025-08-27)
-  - Add support for arrays in tests
-- **0.4.0** (2025-08-17)
-  - Add support for ReScript unit tests (with source maps!)
-- **0.3.0** (2025-07-26)
-  - Add options for markdown extension (and default support for .mdx)
-- **0.2.0** (2025-07-23)
-  - Add support for Gherkin code blocks in markdown
-  - Add basic support for ReScript step definitions
-  - (remove experimental Gherkin in markdown support)
-- **0.1.0** (2025-07-04)
-  - Add async support
-  - Add concurrency support
-  - Fixed negative number parsing
-  - Added support for scientific number notation
-  - Create basic plugin
+See [CHANGELOG.md](./CHANGELOG.md) for release history and
+[NEXT-STEPS.md](./NEXT-STEPS.md) for the deferred publication checklist.

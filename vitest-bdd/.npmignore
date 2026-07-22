@@ -1,15 +1,7 @@
-# Exclude everything
 *
-
-# ReScript target: include ReScript source files and compiled js
+!dist/*
 !src/*.res
 !src/*.resi
 !src/*.mjs
-# Include ReScript configuration
 !rescript.json
-
-# TypeScript target: include build result from esbuild
-!dist/*
-
-# Include readme
 !README.md

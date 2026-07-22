@@ -1,4 +1,4 @@
-open VitestBdd
+open EpureVitest
 
 given("a calculator", ({step}, ()) => {
   let calculator = ResCalculator.make("basic")

@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import { Given } from "vitest-bdd";
+import { Given } from "@epure/vitest";
 import { makeTable } from "../../feature/table";
 
 Given("I have a table", ({ When, Then }, data) => {

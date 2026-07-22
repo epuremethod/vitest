@@ -1,6 +1,6 @@
 import { signal } from "tilia";
 import { expect } from "vitest";
-import { Given } from "vitest-bdd";
+import { Given } from "@epure/vitest";
 
 Given("I have a {string} step", ({ When, Then }, str: string) => {
   const [title, setName] = signal(str);

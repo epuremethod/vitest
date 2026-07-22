@@ -1,5 +1,5 @@
 import { expect, type TestContext } from "vitest";
-import { Given } from "vitest-bdd";
+import { Given } from "@epure/vitest";
 
 Given("I have a test using vitest context", ({ Then }, { task }: TestContext) => {
   Then("test task name should be {string}", (name: string) => {

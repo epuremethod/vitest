@@ -2,12 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Vitest - bdd",
+      "name": "Epure Vitest",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["run", "test:watch"],
-      "cwd": "${workspaceRoot}/vitest-bdd",
+      "cwd": "${workspaceRoot}/epure-vitest",
       "protocol": "inspector",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"

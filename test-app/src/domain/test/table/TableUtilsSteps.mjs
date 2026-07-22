@@ -3,10 +3,10 @@
 import * as Tilia from "tilia/src/Tilia.mjs";
 import * as Vitest from "vitest";
 import * as Stdlib_Int from "@rescript/runtime/lib/es6/Stdlib_Int.js";
-import * as VitestBdd from "vitest-bdd";
+import * as Vitest$1 from "@epure/vitest";
 import * as Stdlib_Option from "@rescript/runtime/lib/es6/Stdlib_Option.js";
 
-VitestBdd.Given("I have a table", (param, data) => {
+Vitest$1.Given("I have a table", (param, data) => {
   let step = param.step;
   let match = Tilia.signal([]);
   let setRecords = match[1];
@@ -17,7 +17,7 @@ VitestBdd.Given("I have a table", (param, data) => {
   });
   let setRecord = match$1[1];
   let record = match$1[0];
-  step("I convert the table to records", () => setRecords(VitestBdd.toRecords(data)));
+  step("I convert the table to records", () => setRecords(Vitest$1.toRecords(data)));
   step("I select record {number}", index => setRecord(Stdlib_Option.getOrThrow(records.value[index], undefined)));
   step("selected name should be {string}", value => Vitest.expect(record.value.name).toBe(value));
   step("selected age should be {number}", value => Vitest.expect(Stdlib_Int.fromString(record.value.age, undefined)).toBe(value));

@@ -1,4 +1,4 @@
-open VitestBdd
+open EpureVitest
 open Tilia
 
 type user = {

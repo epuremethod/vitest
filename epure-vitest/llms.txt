@@ -1,0 +1,57 @@
+# @epure/vitest
+
+@epure/vitest is a Vite plugin that translates Gherkin feature files and
+Gherkin blocks in Markdown into Vitest suites in memory. It also provides
+ReScript bindings for Vitest.
+
+Documentation: https://epurejs.dev
+Repository: https://github.com/epuremethod/vitest
+TypeScript contract: https://github.com/epuremethod/vitest/blob/main/epure-vitest/src/index.ts
+ReScript contract: https://github.com/epuremethod/vitest/blob/main/epure-vitest/src/EpureVitest.resi
+
+Installed contracts:
+- dist/index.d.ts
+- src/EpureVitest.resi
+
+## Mental model
+
+- `epureVitest()` connects contract files to Vitest through Vite.
+- `Given` registers the builder for a scenario's initial step.
+- The builder receives named step functions. Operations registered through
+  those functions close over the state created by that builder.
+- Each scenario gets its own state and can run concurrently.
+- `toRecords`, `toStrings`, and `toNumbers` convert Gherkin data tables.
+
+## Critical rules
+
+- Include contract extensions such as `.feature` and `.md` in Vitest's
+  `test.include`.
+- Place the steps module beside its contract using one of the documented
+  resolver conventions, or provide `stepsResolver`.
+- Use `EpureVitest` from ReScript. `VitestBdd` is a deprecated compatibility
+  module.
+- Use `epureVitest` and `EpureVitestOptions` in TypeScript. Their `vitestBdd`
+  and `VitestBddOptions` aliases are deprecated.
+
+## Wrong analogies
+
+- There is no Cucumber World or Cucumber hooks registry. Vitest lifecycle hooks
+  remain available.
+- This is not a second test runner. Vitest runs the translated suites.
+- A contract is not converted into a generated test file on disk.
+
+## Semantic traps
+
+- Vite does perform an in-memory translation from a feature or Markdown
+  contract to JavaScript.
+- Step matching supports normalized placeholders such as `{string}` and
+  `{number}`. It is not a complete Cucumber Expressions implementation.
+- Scenario operations are available only after their matching `Given` builder
+  has registered them.
+
+## Deliberate non-goals
+
+- Cucumber World compatibility.
+- A global step registry shared across files.
+- A complete Cucumber Expressions implementation.
+- Generated test files committed to the repository.

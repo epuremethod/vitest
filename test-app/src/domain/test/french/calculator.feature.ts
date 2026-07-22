@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import { Given as Soit } from "vitest-bdd";
+import { Given as Soit } from "@epure/vitest";
 import { makeCalculator } from "../../feature/calculator";
 
 Soit("une calculatrice", ({ Quand, Alors }) => {

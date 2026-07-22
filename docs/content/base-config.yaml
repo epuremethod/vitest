@@ -1,5 +1,5 @@
 var:
-  project: tilia
+  project: epurejs
 
 shared:
   literals:
@@ -16,7 +16,7 @@ shared:
       (function () {
         var q = new URLSearchParams(location.search).get("lang");
         var saved = null;
-        try { saved = localStorage.getItem("tilia-lang"); } catch (e) {}
+        try { saved = localStorage.getItem("epure-vitest-lang"); } catch (e) {}
         var lang = (q === "ts" || q === "res") ? q : (saved === "res" ? "res" : "ts");
         document.documentElement.setAttribute("data-lang", lang);
       })();
@@ -27,7 +27,7 @@ shared:
         if (!e.target.closest(".lang-toggle, .toggle")) return;
         var next = document.documentElement.getAttribute("data-lang") === "ts" ? "res" : "ts";
         document.documentElement.setAttribute("data-lang", next);
-        try { localStorage.setItem("tilia-lang", next); } catch (err) {}
+        try { localStorage.setItem("epure-vitest-lang", next); } catch (err) {}
       });
     docsScrollSpyScript: |-
       /* Scroll-spy: highlight the current chapter in the reading path. */
@@ -48,23 +48,23 @@ shared:
     header: |-
       <header class="top">
         <div class="wrap">
-          <a class="wordmark" href="./index.html" aria-label="tilia — home">{{wordmarkSvg}}tilia</a>
+          <a class="wordmark" href="./index.html" aria-label="@epure/vitest — home">{{wordmarkSvg}}@epure/vitest</a>
           <nav class="nav" aria-label="Site">
             <a href="./index.html">Home</a>
             <a href="./guide.html"{{docsCurrentAttr}}>Guide</a>
             <a href="./api.html"{{apiCurrentAttr}}>API</a>
-            <a href="https://github.com/tiliajs/tilia">GitHub</a>
+            <a href="https://github.com/epuremethod/vitest">GitHub</a>
           </nav>
         </div>
       </header>
     footer: |-
       <footer class="foot">
         <div class="wrap">
-          <div class="fcell"><span class="lbl">Package</span><span class="val"><a href="https://www.npmjs.com/package/tilia">tilia on npm</a></span></div>
-          <div class="fcell"><span class="lbl">Source</span><span class="val"><a href="https://github.com/tiliajs/tilia">github.com/tiliajs/tilia</a></span></div>
+          <div class="fcell"><span class="lbl">Package</span><span class="val"><a href="https://www.npmjs.com/package/@epure/vitest">@epure/vitest on npm</a></span></div>
+          <div class="fcell"><span class="lbl">Source</span><span class="val"><a href="https://github.com/epuremethod/vitest">github.com/epuremethod/vitest</a></span></div>
           <div class="fcell"><span class="lbl">License</span><span class="val">MIT</span></div>
           <div class="fcell"><span class="lbl">Method</span><span class="val"><a href="https://epuremethod.com">épure</a></span></div>
-          <div class="fcell"><span class="lbl">Site</span><span class="val">tiliajs.com</span></div>
+          <div class="fcell"><span class="lbl">Site</span><span class="val">epurejs.dev</span></div>
         </div>
       </footer>
     shell: |-
@@ -90,9 +90,9 @@ shared:
       </body>
       </html>
     moduleLabelCore: |-
-      Core
+      Gherkin
     moduleLabelReact: |-
-      React
+      Vitest
 
 pages:
   api:
@@ -125,7 +125,7 @@ pages:
           <div class="wrap">
             <p class="eyebrow">Reference<span class="sep">·</span>v1.x<span class="sep">·</span>TypeScript &amp; ReScript signatures</p>
             <h1>API Reference</h1>
-            <p class="sec-lead">The public surface of tilia. Each entry gives the signature, behavior, and one minimal example.</p>
+            <p class="sec-lead">The public surface of @epure/vitest. Each entry gives the signature, behavior, and one minimal example.</p>
           </div>
         </div>
 
@@ -139,9 +139,9 @@ pages:
         </div>
     document:
       title: |-
-        API Reference — tilia
+        API Reference — @epure/vitest
       description: |-
-        tilia API reference — the complete public surface of the tilia state management library for TypeScript and ReScript.
+        @epure/vitest API reference for TypeScript and ReScript.
       activeNav: api
       htmlAttrs: |-
         lang="en" data-lang="ts"
@@ -183,7 +183,7 @@ pages:
           <div class="wrap">
             <p class="eyebrow">Guide<span class="sep">·</span>v1.x<span class="sep">·</span>Guided tour</p>
             <h1>The Guide</h1>
-            <p class="standfirst">A reading path through tilia, in order: the mental model first, then tracking, computed values, observers, and React. Read it top to bottom once. When you need to look something up later, use the <a href="./api.html">API reference</a> instead — it is flat, complete, and made for that.</p>
+            <p class="standfirst">A reading path through @epure/vitest, from executable contracts to typed steps and Vitest integration.</p>
           </div>
         </div>
 
@@ -200,9 +200,9 @@ pages:
         </div>
     document:
       title: |-
-        The Guide — tilia
+        The Guide — @epure/vitest
       description: |-
-        The tilia guide — a reading path through the mental model, tracking, computed values, observers, and React integration.
+        The @epure/vitest guide — executable contracts for TypeScript and ReScript.
       activeNav: docs
       htmlAttrs: |-
         lang="en" data-lang="ts"
