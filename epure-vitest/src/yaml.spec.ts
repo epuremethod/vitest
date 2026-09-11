@@ -170,10 +170,10 @@ describe("YAML Given", () => {
     const key = `background-${randomUUID()}`;
     const calls: unknown[][] = [];
     const context = { task: { name: "scenario" } } as TestContext;
-    Given(key, ({ When, Then }, data, testContext) => {
-      When("an unused operation", () => {});
-      Then("another unused operation", () => {});
-      calls.push([data, testContext]);
+    Given(key, ({ step, test }, data) => {
+      step("an unused operation", () => {});
+      step("another unused operation", () => {});
+      calls.push([data, test]);
     });
 
     await loadYaml(key, { value: 42 }, context);

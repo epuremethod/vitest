@@ -2,18 +2,18 @@ import { expect } from "vitest";
 import { Given } from "@epure/vitest";
 import { makeCalculator } from "../../feature/calculator";
 
-Given("I have a {string} calculator", ({ When, Then, And }, name: string) => {
+Given("I have a {string} calculator", ({ step }, name: string) => {
   const calculator = makeCalculator(name);
 
-  When("I add {number} and {number}", calculator.add);
-  When("I subtract {number} and {number}", calculator.subtract);
-  When("I multiply {number} and {number}", calculator.multiply);
-  When("I divide {number} by {number}", calculator.divide);
+  step("I add {number} and {number}", calculator.add);
+  step("I subtract {number} and {number}", calculator.subtract);
+  step("I multiply {number} and {number}", calculator.multiply);
+  step("I divide {number} by {number}", calculator.divide);
 
-  Then("the result is {number}", (n: number) => {
+  step("the result is {number}", (n: number) => {
     expect(calculator.result).toBe(n);
   });
-  And("the title is {string}", (s: string) => {
+  step("the title is {string}", (s: string) => {
     expect(calculator.title).toBe(s);
   });
 });

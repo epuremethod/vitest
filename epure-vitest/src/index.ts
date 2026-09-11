@@ -7,7 +7,7 @@ import { resCompile, resCompiledResolver } from "./resCompile";
 import { yamlCompile } from "./yamlCompile";
 
 export { resCompiledResolver } from "./resCompile";
-export { type Context, Given, type Step } from "./steps";
+export { Given, type Handle, type Step } from "./steps";
 export { toNumbers, toRecords, toStrings } from "./utils";
 
 /** Configuration accepted by {@link epureVitest}. */

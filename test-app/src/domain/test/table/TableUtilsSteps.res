@@ -6,7 +6,7 @@ type user = {
   age: string,
 }
 
-given("I have a table", ({step}, data) => {
+given1("I have a table", ({step}, data) => {
   let (records, setRecords) = signal([])
   let (record, setRecord) = signal({name: "", age: ""})
 

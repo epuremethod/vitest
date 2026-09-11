@@ -21,7 +21,7 @@ Then the review intervals are
 ```
 
 ```typescript
-Then("the review intervals are", (table) => {
+step("the review intervals are", (table) => {
   expect(scheduler.intervals).toEqual(toNumbers(table));
 });
 ```

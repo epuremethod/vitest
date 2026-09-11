@@ -1,6 +1,6 @@
 open EpureVitest
 
-given("I have a {string} calculator", ({step}, name: string) => {
+given1("I have a {string} calculator", ({step}, name: string) => {
   let calculator = ResCalculator.make(name)
 
   step("I add {number} and {number}", calculator.add)

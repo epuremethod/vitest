@@ -18,15 +18,15 @@ Installed contracts:
 - `epureVitest()` connects `.feature`, Markdown, YAML, and ReScript files to
   Vitest through Vite.
 - `Given` registers a feature builder or YAML scenario handler.
-- The builder receives named step functions. Operations registered through
-  those functions close over the state created by that builder.
+- The builder receives a handle: `step` registers a scenario operation and
+  `test` is the running Vitest test. Operations registered through `step`
+  close over the state created by that builder.
 - Each scenario gets its own state and can run concurrently.
 - `toRecords`, `toStrings`, and `toNumbers` convert Gherkin data tables.
 - `.yaml` files are translated into source-mapped suites; Vitest's
   `test.include` controls which YAML files are tests.
-- For YAML, `Given` receives step bindings, each example's data, and Vitest
-  `TestContext`, in the same positions as feature bindings, captures, and
-  context.
+- For YAML, `Given` receives the same handle first, then each example's
+  data where a feature places its captures.
 
 ## Critical rules
 

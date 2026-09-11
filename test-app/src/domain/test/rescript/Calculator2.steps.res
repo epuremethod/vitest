@@ -1,6 +1,6 @@
 open EpureVitest
 
-given("a calculator", ({step}, ()) => {
+given("a calculator", ({step}) => {
   let calculator = ResCalculator.make("basic")
   let numbers = ref([])
   step("I have {number} and {number} and {number}", (a: float, b: float, c: float) => {

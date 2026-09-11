@@ -8,12 +8,15 @@ type Runner = {
 };
 
 type Operations = Record<string, Operation>;
-type Build = (...params: any[]) => void | Promise<void>;
+type Build = (handle: Handle, ...params: any[]) => void | Promise<void>;
 type Builder = (params: any[], testContext: TestContext) => Promise<Runner>;
-/** Register a scenario operation such as `When` or `Then`. */
+/** Register a scenario operation such as a `When` or `Then` step. */
 export type Step = (key: string, op: Operation) => void;
-/** Named scenario operations supplied to a `Given` builder. */
-export type Context = Record<string, Step>;
+/** What a `Given` builder receives: the step register and the running test. */
+export type Handle = {
+  step: Step;
+  test: TestContext;
+};
 
 const builders: Record<string, Builder> = {};
 
@@ -35,17 +38,15 @@ export function Given(key: string, build: Build) {
         return operation;
       },
     };
-    const ctx: Context = new Proxy(
-      {},
-      {
-        get: () => (key: string, op: Operation) => {
-          for (const query of normalize(key)) {
-            ops[query] = op;
-          }
-        },
+    const handle: Handle = {
+      step: (key: string, op: Operation) => {
+        for (const query of normalize(key)) {
+          ops[query] = op;
+        }
       },
-    );
-    await build(ctx, ...params, testContext);
+      test: testContext,
+    };
+    await build(handle, ...params);
     return runner;
   };
   for (const query of normalize(key)) {

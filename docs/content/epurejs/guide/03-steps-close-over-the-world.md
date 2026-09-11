@@ -20,17 +20,17 @@ import { expect } from "vitest";
 import { Given } from "@epure/vitest";
 import { makeScheduler } from "../feature/scheduler";
 
-Given("a card {string} with interval {number} day(s)", ({ When, Then, And }, name: string, days: number) => {
+Given("a card {string} with interval {number} day(s)", ({ step }, name: string, days: number) => {
   const scheduler = makeScheduler();
   const card = scheduler.add(name, { interval: days });
 
-  When("I review {string} and pass", (n: string) => scheduler.review(n, "pass"));
-  When("I review {string} and fail", (n: string) => scheduler.review(n, "fail"));
+  step("I review {string} and pass", (n: string) => scheduler.review(n, "pass"));
+  step("I review {string} and fail", (n: string) => scheduler.review(n, "fail"));
 
-  Then("{string} is scheduled {number} day(s) out", (n: string, d: number) => {
+  step("{string} is scheduled {number} day(s) out", (n: string, d: number) => {
     expect(scheduler.dueIn(n)).toBe(d);
   });
-  And("the interval of {string} is {number} day(s)", (n: string, d: number) => {
+  step("the interval of {string} is {number} day(s)", (n: string, d: number) => {
     expect(scheduler.get(n).interval).toBe(d);
   });
 });
@@ -40,7 +40,7 @@ Given("a card {string} with interval {number} day(s)", ({ When, Then, And }, nam
 // SchedulingSteps.res
 open EpureVitest
 
-given("a card {string} with interval {number} day(s)", ({step}, name: string) => {
+given1("a card {string} with interval {number} day(s)", ({step}, name: string) => {
   let scheduler = Scheduler.make()
   let _card = scheduler.add(name, ~interval=2.0)
 
@@ -64,14 +64,14 @@ Nadia keeps `days` and `day` in the contract; Alice writes `day(s)` only in the 
 
 **Concurrency for free.** Each scenario calls the builder again and gets a fresh world; nothing is shared, so Vitest runs scenarios concurrently by default. No one has to serialize access to global state.
 
-**Names are yours.** The context the builder destructures is a proxy: `When`, `Then`, `And`, `But` — or `Quand` and `Alors` — any name becomes a [step binder](api.html#step-type). Matching is by pattern text, so the binder names exist only to read well next to the feature file. ReScript keeps a single `step` field for all of them.
+**One word in the code.** The keywords belong to the feature file: `When`, `Then`, `And`, `But` — or `Quand` and `Alors`. Matching is by pattern text, so the code needs only one [step binder](api.html#step-type): `step`, the same in TypeScript and ReScript. The handle's other field is `test`, the running Vitest test, for `test.onTestFinished` teardown.
 
-**Async is ordinary.** Builders and steps may be `async`; the runner awaits each in turn. The last builder parameter is Vitest's `TestContext` for the rare step that wants `onTestFailed` or a custom abort.
+**Async is ordinary.** Builders and steps may be `async`; the runner awaits each in turn.
 
 **Reuse is function composition.** A step set shared by several contracts — form assertions, say — is a function taking a binder and a subject. No registry, no inheritance: call it from any builder whose subject fits.
 
 ::: pro
-In ReScript, `given` captures at most one `{string}` or `{number}` parameter — a type-system limit. Need more? Put the extra values in a step or a table. In practice a `Given` with three parameters is usually a scenario trying to hide its setup.
+In ReScript, `given` binds a pattern with no captures; `given1` and `given2` bind one and two. In practice a `Given` with three parameters is usually a scenario trying to hide its setup.
 :::
 
 ::: story

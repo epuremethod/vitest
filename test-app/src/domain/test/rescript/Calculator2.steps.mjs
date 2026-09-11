@@ -4,7 +4,7 @@ import * as Vitest from "vitest";
 import * as Vitest$1 from "@epure/vitest";
 import * as ResCalculator from "../../feature/ResCalculator.mjs";
 
-Vitest$1.Given("a calculator", (param, param$1) => {
+Vitest$1.Given("a calculator", param => {
   let step = param.step;
   let calculator = ResCalculator.make("basic");
   let numbers = {

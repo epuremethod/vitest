@@ -32,11 +32,11 @@ A table arrives in the step as raw rows of strings, passed as the last parameter
 ```typescript
 import { Given, toRecords } from "@epure/vitest";
 
-Given("a deck with cards", ({ When, Then }, rows) => {
+Given("a deck with cards", ({ step }, rows) => {
   const deck = makeDeck(toRecords(rows));
 
-  When("I review {string} and pass", (n: string) => deck.review(n, "pass"));
-  Then("the deck is", (expected) => {
+  step("I review {string} and pass", (n: string) => deck.review(n, "pass"));
+  step("the deck is", (expected) => {
     expect(deck.snapshot()).toEqual(toRecords(expected));
   });
 });
@@ -45,7 +45,7 @@ Given("a deck with cards", ({ When, Then }, rows) => {
 ```rescript
 open EpureVitest
 
-given("a deck with cards", ({step}, rows) => {
+given1("a deck with cards", ({step}, rows) => {
   let deck = Deck.make(toRecords(rows))
 
   step("I review {string} and pass", n => deck.review(n, Pass))
@@ -71,22 +71,22 @@ Fonctionnalité: Programmation des révisions
     Alors "gato" est programmée dans 0 jours
 ```
 
-The steps file works without any configuration because binder names were never keywords — the context proxy exposes whatever names you destructure:
+The steps file works without any configuration because the keywords live in the contract, not in the code — `step` binds a French sentence as readily as an English one:
 
 ```typescript
-Soit("une carte {string} avec un intervalle de {number} jours", ({ Quand, Alors }, nom: string, jours: number) => {
+Soit("une carte {string} avec un intervalle de {number} jours", ({ step }, nom: string, jours: number) => {
   const scheduler = makeScheduler();
   scheduler.add(nom, { interval: jours });
 
-  Quand("je révise {string} et j'échoue", (n: string) => scheduler.review(n, "fail"));
-  Alors("{string} est programmée dans {number} jours", (n: string, j: number) => {
+  step("je révise {string} et j'échoue", (n: string) => scheduler.review(n, "fail"));
+  step("{string} est programmée dans {number} jours", (n: string, j: number) => {
     expect(scheduler.dueIn(n)).toBe(j);
   });
 });
 ```
 
 ```rescript
-given("une carte {string} avec un intervalle de {number} jours", ({step}, nom: string) => {
+given1("une carte {string} avec un intervalle de {number} jours", ({step}, nom: string) => {
   let scheduler = Scheduler.make()
   scheduler.add(nom, ~interval=8.0)
 

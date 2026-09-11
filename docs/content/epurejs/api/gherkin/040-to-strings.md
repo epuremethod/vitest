@@ -20,7 +20,7 @@ Then the decks are
 ```
 
 ```typescript
-Then("the decks are", (table) => {
+step("the decks are", (table) => {
   expect(store.deckNames).toEqual(toStrings(table));
 });
 ```

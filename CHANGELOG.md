@@ -2,10 +2,23 @@
 
 ## Unreleased
 
+- **Breaking**: the `Given` builder now receives a plain handle `{ step, test }`
+  in both TypeScript and ReScript. `step` registers every scenario operation —
+  the keywords (`When`, `Then`, `Alors`, …) belong to the feature file, not the
+  code — and `test` is the running Vitest `TestContext`, so teardown is
+  `test.onTestFinished`. The any-name proxy and the trailing `TestContext`
+  argument are gone; the exported type is `Handle` (previously `Context`).
+- **Breaking**: in ReScript, `given` now binds a pattern with no captures;
+  `given1` and `given2` bind one and two. `given` no longer types the
+  test context into the capture slot.
+
 - Mapped a ReScript test whose name `rescript format` moved to the line after
   `it(`; such tests printed `No source mapping` and reported failures against
   the wrong line.
 - Added source-mapped YAML example fixtures to `epureVitest`.
+- Let a ReScript `given`, `given1` or `given2` builder be `async`. The binding
+  typed the builder's answer as `unit`, so an `async` builder's `promise<unit>`
+  was rejected, though the runner has always awaited it.
 - Extended `Given` to YAML scenario and background handlers with Vitest's test
   context.
 

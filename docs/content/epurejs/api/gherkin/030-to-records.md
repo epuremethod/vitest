@@ -33,11 +33,11 @@ Feature: The card table
 ```typescript
 import { Given, toRecords } from "@epure/vitest";
 
-Given("I have a table", ({ When, Then }, data) => {
+Given("I have a table", ({ step }, data) => {
   const table = makeTable(toRecords(data));
 
-  When("I sort by {string}", table.sort);
-  Then("the table is", (expected) => {
+  step("I sort by {string}", table.sort);
+  step("the table is", (expected) => {
     expect(table.list).toEqual(toRecords(expected));
   });
 });
@@ -46,7 +46,7 @@ Given("I have a table", ({ When, Then }, data) => {
 ```rescript
 open EpureVitest
 
-given("I have a table", ({step}, data) => {
+given1("I have a table", ({step}, data) => {
   let table = Table.make(toRecords(data))
 
   step("I sort by {string}", table.sort)

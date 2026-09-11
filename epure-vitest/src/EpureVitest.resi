@@ -1,4 +1,13 @@
-type given = {step: 'a. (string, 'a) => unit}
+type rec testContext = {
+  onTestFailed: 'a. (testContext => 'a) => unit,
+  onTestFinished: 'a. (testContext => 'a) => unit,
+}
+
+type given = {
+  step: 'a. (string, 'a) => unit,
+  /** The running test: `test.onTestFinished` is the scenario's teardown. */
+  test: testContext,
+}
 
 type pollOptions = {
   interval: float,
@@ -154,7 +163,13 @@ module OfType = {
 // ========= Gherkin ==========
 
 @module("@epure/vitest")
-external given: (string, (given, 'a) => unit) => unit = "Given"
+external given: (string, given => 'r) => unit = "Given"
+
+@module("@epure/vitest")
+external given1: (string, (given, 'a) => 'r) => unit = "Given"
+
+@module("@epure/vitest")
+external given2: (string, (given, 'a, 'b) => 'r) => unit = "Given"
 
 @module("@epure/vitest")
 external toRecords: array<array<string>> => array<'a> = "toRecords"
@@ -166,11 +181,6 @@ external toStrings: array<array<string>> => array<string> = "toStrings"
 external toNumbers: array<array<string>> => array<float> = "toNumbers"
 
 // ========= Vitest ==========
-
-type rec testContext = {
-  onTestFailed: 'a. (testContext => 'a) => unit,
-  onTestFinished: 'a. (testContext => 'a) => unit,
-}
 
 @module("vitest")
 external expect: 'a => assertions<'a> = "expect"

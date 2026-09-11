@@ -5,8 +5,8 @@ slug: yaml-given
 kind: function
 since: "1.2"
 sort: 20
-summary: Bind a YAML given name to a handler receiving steps, data, and test context.
-signature.ts: "function Given(name: string, handle: (steps: Context, data: Record<string, unknown>, context: TestContext) => void | Promise<void>): void"
+summary: Bind a YAML given name to a handler receiving the handle and the example data.
+signature.ts: "function Given(name: string, build: (handle: Handle, data: Record<string, unknown>) => void | Promise<void>): void"
 signature.res: "// YAML fixture steps are a TypeScript API"
 tags: []
 ---
@@ -14,9 +14,9 @@ tags: []
 Import `Given` from `@epure/vitest` in the fixture's steps module, just as for
 a feature file. Its name matches the scenario's `given`, or
 `background.given` when the scenario does not provide one. Its handler receives
-step bindings first, then every field except `scenario` and `given`, and
-Vitest's `TestContext` last. Step bindings can register operations, though YAML
-fixtures do not execute those operations yet.
+the handle first, then every field except `scenario` and `given`. The
+handle's `step` can register operations, though YAML fixtures do not execute
+them yet; its `test` is the running Vitest test.
 
 Handlers may be asynchronous. Each key can be registered once per test process.
 
@@ -40,12 +40,12 @@ examples:
 import { Given } from "@epure/vitest";
 import { expect } from "vitest";
 
-Given("a calculator", (_steps, { left, right, result }, context) => {
+Given("a calculator", ({ test }, { left, right, result }) => {
   expect(Number(left) + Number(right)).toBe(result);
-  expect(context.task.name).toBeTypeOf("string");
+  expect(test.task.name).toBeTypeOf("string");
 });
 ```
 
 This is the same [Given](api.html#given) registration used by Gherkin. Its
-arguments occupy the same positions: step bindings first, contract data or
-captures in the middle, and the test context last.
+arguments occupy the same positions: the handle first, contract data where a
+feature places its captures.

@@ -59,16 +59,17 @@ or a shared `steps.ts` beside the fixture:
 import { Given } from "@epure/vitest";
 import { expect } from "vitest";
 
-Given("a calculator", (_steps, { left, right, result }, context) => {
+Given("a calculator", ({ test }, { left, right, result }) => {
   expect(Number(left) + Number(right)).toBe(result);
-  expect(context.task.name).toBeTypeOf("string");
+  expect(test.task.name).toBeTypeOf("string");
 });
 ```
 
 Each example becomes a source-mapped Vitest test. A scenario's `given`
 overrides `background.given`; one of them is required. The remaining fields
 occupy the parameter position in the same `Given` API used by features:
-step bindings first, scenario data second, and Vitest's `TestContext` last.
+the handle first, scenario data second. The handle carries `step`, which
+registers a scenario operation, and `test`, the running Vitest test.
 
 ## Write a contract
 
@@ -89,22 +90,24 @@ Place its steps beside it:
 import { Given } from "@epure/vitest";
 import { expect } from "vitest";
 
-Given("I have a calculator", ({ When, Then }) => {
+Given("I have a calculator", ({ step }) => {
   let result = 0;
 
-  When("I add {number} and {number}", (a: number, b: number) => {
+  step("I add {number} and {number}", (a: number, b: number) => {
     result = a + b;
   });
 
-  Then("the result is {number}", (expected: number) => {
+  step("the result is {number}", (expected: number) => {
     expect(result).toBe(expected);
   });
 });
 ```
 
-Each `Given` builder creates private scenario state. Its `When`, `Then`, and
-other named operations close over that state, so scenarios can run
-concurrently without a shared World.
+Each `Given` builder creates private scenario state. The operations it
+registers through `step` close over that state, so scenarios can run
+concurrently without a shared World. The feature file keeps its own words —
+`When`, `Then`, `Alors` — while the code has one: `step`. The handle's
+`test` is the running Vitest test, for `test.onTestFinished` teardown.
 
 ## ReScript
 
@@ -113,7 +116,7 @@ Open the canonical `EpureVitest` module:
 ```rescript
 open EpureVitest
 
-given("I have a calculator", ({step}, _params) => {
+given("I have a calculator", ({step}) => {
   let result = ref(0)
 
   step("I add {number} and {number}", (a, b) => {
