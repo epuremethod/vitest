@@ -12,7 +12,7 @@
     "test": "bun test src"
   },
   "dependencies": {
-    "@epure/minidoc": "0.1.0-beta.20260726T234354",
+    "@epure/minidoc": "0.1.0",
     "live-server": "^1.2.2",
     "markdown-it": "^14.3.0",
     "markdown-it-container": "^4.0.0",

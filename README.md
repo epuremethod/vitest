@@ -152,5 +152,4 @@ pnpm test
 pnpm --filter epure-vitest-docs check
 ```
 
-See [CHANGELOG.md](./CHANGELOG.md) for release history and
-[NEXT-STEPS.md](./NEXT-STEPS.md) for the deferred publication checklist.
+See [CHANGELOG.md](./CHANGELOG.md) for release history.
