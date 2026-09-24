@@ -40,7 +40,7 @@ describe("epureVitest YAML", () => {
     const result = await load.call({} as never, file);
     if (!result || typeof result === "string") throw new Error("Expected compiled code");
 
-    expect(result.code).toContain('import { loadYaml } from "@epure/vitest/runtime";');
+    expect(result.code).toContain('import { loadYaml } from "@epure/vitest";');
     expect(result.code).toContain('describe.concurrent("Calculator"');
     expect(result.code).toContain('it("adds two numbers", async (ctx) => {');
     expect(result.code).toContain('await loadYaml("a calculator", {');

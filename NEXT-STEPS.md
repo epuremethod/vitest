@@ -7,7 +7,7 @@ package rename, compatibility layer, tests, and deployment workflow are ready.
 ## Publish the npm migration
 
 1. Run the complete local verification suite and inspect both package tarballs.
-2. Publish `@epure/vitest@1.1.0` as a public scoped package.
+2. Publish `@epure/vitest@2.0.0` as a public scoped package.
 3. Verify that the canonical package contains:
    - ESM and CommonJS entry points;
    - TypeScript declarations;
@@ -16,8 +16,8 @@ package rename, compatibility layer, tests, and deployment workflow are ready.
    - `README.md` and `llms.txt`.
 4. Install only `@epure/vitest` in a temporary project and run a TypeScript
    feature plus a ReScript feature.
-5. Publish the final `vitest-bdd@1.1.0` compatibility package. It must depend
-   on `@epure/vitest@^1.1.0` and forward its ESM, CommonJS, TypeScript, and
+5. Publish the final `vitest-bdd@2.0.0` compatibility package. It must depend
+   on `@epure/vitest@^2.0.0` and forward its ESM, CommonJS, TypeScript, and
    ReScript entry points.
 6. Test projects with only the old name and with both names installed. Confirm
    that they use the canonical builder state and that generated imports resolve.

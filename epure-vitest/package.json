@@ -29,20 +29,6 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./runtime": {
-      "types": "./dist/runtime.d.ts",
-      "import": "./dist/runtime.js",
-      "require": "./dist/runtime.cjs"
-    },
-    "./rescript.json": "./rescript.json",
-    "./src/*": "./src/*"
-  },
   "sideEffects": false,
   "engines": {
     "node": ">=18.0.0"

@@ -54,7 +54,7 @@ export function Given(key: string, build: Build) {
   }
 }
 
-/** @internal Used by translated suites through `@epure/vitest/runtime`. */
+/** @internal Used by translated feature suites. */
 export function load(given: StepType, testContext: TestContext): Promise<Runner> {
   const builder = builders[given.query];
   if (!builder) {
