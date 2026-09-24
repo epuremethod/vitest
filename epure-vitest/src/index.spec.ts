@@ -24,7 +24,7 @@ describe("epureVitest", () => {
     expect(warn).toHaveBeenCalledWith("vitestBdd is deprecated. Use epureVitest instead.");
   });
 
-  it("generates imports from the canonical runtime", async () => {
+  it("generates imports from the package entry", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "epure-vitest-"));
     try {
       const feature = path.join(dir, "calculator.feature");
@@ -40,7 +40,7 @@ describe("epureVitest", () => {
       const result = await load.call({} as never, feature);
       if (!result || typeof result === "string") throw new Error("Expected compiled code");
 
-      expect(result.code).toContain('from "@epure/vitest/runtime"');
+      expect(result.code).toContain('import { load } from "@epure/vitest";');
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

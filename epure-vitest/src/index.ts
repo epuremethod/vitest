@@ -7,7 +7,7 @@ import { resCompile, resCompiledResolver } from "./resCompile";
 import { yamlCompile } from "./yamlCompile";
 
 export { resCompiledResolver } from "./resCompile";
-export { type Context, Given, type Step } from "./steps";
+export { type Context, Given, load, loadYaml, type Step } from "./steps";
 export { toNumbers, toRecords, toStrings } from "./utils";
 
 /** Configuration accepted by {@link epureVitest}. */
@@ -118,7 +118,7 @@ function compile(path: string, opts: Required<EpureVitestOptions>) {
     push(`});`, feature.location);
   } else {
     push(`import { describe, test } from "vitest";`, base);
-    push(`import { load } from "@epure/vitest/runtime";`, base);
+    push(`import { load } from "@epure/vitest";`, base);
     push(`import ${JSON.stringify(stepsPath)};`, base);
     push(`describe${concurrent}(${JSON.stringify(feature.title)}, () => {`, feature.location);
     for (const scenario of feature.scenarios) {

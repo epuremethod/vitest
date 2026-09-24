@@ -62,7 +62,7 @@ export function yamlCompile(path: string, options: YamlCompileOptions): { code: 
   const concurrent = options.concurrent === false ? "" : ".concurrent";
   push(`import { describe, it } from "vitest";`, top);
   push(`import ${JSON.stringify(options.stepsPath)};`, top);
-  push(`import { loadYaml } from "@epure/vitest/runtime";`, top);
+  push(`import { loadYaml } from "@epure/vitest";`, top);
   push(`describe${concurrent}(${JSON.stringify(feature)}, () => {`, featurePos);
   if (examples !== undefined) {
     if (!isSeq(examples)) {
