@@ -4,36 +4,18 @@ These publication steps are intentionally deferred until the documentation,
 package rename, compatibility layer, tests, and deployment workflow are ready.
 `epurejs.dev` is already configured with HTTPS support.
 
-## Publish the npm migration
+## Deprecate the former package
 
-1. Run the complete local verification suite and inspect both package tarballs.
-2. Publish `@epure/vitest@2.0.0` as a public scoped package.
-3. Verify that the canonical package contains:
-   - ESM and CommonJS entry points;
-   - TypeScript declarations;
-   - `EpureVitest.res`, `EpureVitest.resi`, and generated ReScript files;
-   - the deprecated `VitestBdd` compatibility module;
-   - `README.md` and `llms.txt`.
-4. Install only `@epure/vitest` in a temporary project and run a TypeScript
-   feature plus a ReScript feature.
-5. Publish the final `vitest-bdd@2.0.0` compatibility package. It must depend
-   on `@epure/vitest@^2.0.0` and forward its ESM, CommonJS, TypeScript, and
-   ReScript entry points.
-6. Test projects with only the old name and with both names installed. Confirm
-   that they use the canonical builder state and that generated imports resolve.
-7. Deprecate every old package version:
+`@epure/vitest@1.1.0` and the `vitest-bdd@1.1.0` compatibility package are
+published. `vitest-bdd` is no longer in this repository and receives no 2.x
+release. Deprecate every old version so that installing it shows the new name:
 
-   ```sh
-   npm deprecate 'vitest-bdd@*' \
-     'Renamed to @epure/vitest. Install with: npm install -D @epure/vitest'
-   ```
+```sh
+npm deprecate 'vitest-bdd@*' \
+  'Renamed to @epure/vitest. Install with: npm install -D @epure/vitest'
+```
 
-8. Stop publishing features under `vitest-bdd`. Keep it available and
-   deprecated so existing lockfiles remain reproducible.
-
-npm has no publisher-controlled package redirect. Its aliases are
-consumer-local and cannot safely replace this compatibility release because
-generated suites import the canonical package name.
+Keep the package available so existing lockfiles remain reproducible.
 
 ## Publish and verify the completed migration
 

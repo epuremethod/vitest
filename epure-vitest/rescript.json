@@ -3,7 +3,7 @@
   "sources": [
     {
       "dir": "src",
-      "public": ["EpureVitest", "VitestBdd"],
+      "public": ["EpureVitest"],
       "subdirs": true
     },
     {

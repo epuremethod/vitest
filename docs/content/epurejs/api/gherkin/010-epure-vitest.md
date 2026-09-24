@@ -20,9 +20,6 @@ no generated code on disk.
 
 Scenarios run concurrently by default — each `Given` builds its own context, so there is no shared world that requires serialized access. Set `concurrent: false` if a suite genuinely requires sequential execution. See the guide chapter [Wired into Vitest](guide.html#wired-into-vitest).
 
-The former `vitestBdd` export remains as a deprecated alias and warns once per
-process when called.
-
 ```typescript
 // vitest.config.ts
 import { defineConfig } from "vitest/config";

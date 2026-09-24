@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { SourceMapConsumer } from "source-map";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { epureVitest, stepsResolver, vitestBdd } from "./index";
+import { epureVitest, stepsResolver } from "./index";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -12,16 +12,6 @@ afterEach(() => {
 describe("epureVitest", () => {
   it("uses the canonical plugin name", () => {
     expect(epureVitest().name).toBe("@epure/vitest");
-  });
-
-  it("warns once when the deprecated factory is used", () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-
-    vitestBdd();
-    vitestBdd();
-
-    expect(warn).toHaveBeenCalledOnce();
-    expect(warn).toHaveBeenCalledWith("vitestBdd is deprecated. Use epureVitest instead.");
   });
 
   it("generates imports from the package entry", async () => {

@@ -1,13 +1,9 @@
 # Changelog
 
-## 2.0.0 — 2026-09-24
-
-1.1.0 was only published as betas; its changes ship here.
+## 2.0.0 — Unreleased
 
 ### Breaking
 
-- Renamed the package from `vitest-bdd` to `@epure/vitest`. The `vitest-bdd`
-  package now re-exports `@epure/vitest`, so the changes below reach it too.
 - The `Given` builder now receives a plain handle `{ step, test }` in both
   TypeScript and ReScript. `step` registers every scenario operation — the
   keywords (`When`, `Then`, `Alors`, …) belong to the feature file, not the
@@ -17,34 +13,39 @@
 - In ReScript, `given` now binds a pattern with no captures; `given1` and
   `given2` bind one and two. `given` no longer types the test context into
   the capture slot.
+- Removed the deprecated `vitest-bdd` names: `vitestBdd`, `VitestBddOptions`
+  and the ReScript `VitestBdd` module. Use `epureVitest`,
+  `EpureVitestOptions` and `EpureVitest`.
+- `vitest-bdd` stays at 1.1.0 and is not published for 2.0.0. Install
+  `@epure/vitest` to upgrade.
 
 ### Added
 
-- YAML scenarios: `.yaml` files are translated into source-mapped suites, and
-  `Given` registers their scenario and background handlers with Vitest's test
-  context. Vitest's `test.include` controls which YAML files are tests.
-- Support for plural idioms: `I tap 10 times` matches `I tap {number} time(s)`.
 - A ReScript `given`, `given1` or `given2` builder can be `async`. The binding
   typed the builder's answer as `unit`, so an `async` builder's
   `promise<unit>` was rejected, though the runner has always awaited it.
-- The [epurejs.dev](https://epurejs.dev) documentation build.
 
-### Changed
+## 1.1.0 — 2026-09-24
 
-- Renamed the canonical plugin API to `epureVitest` and `EpureVitestOptions`,
-  and the canonical ReScript module to `EpureVitest`. The old TypeScript and
-  ReScript names remain as deprecated aliases.
+- Renamed from `vitest-bdd` to `@epure/vitest`. `vitest-bdd`
+  1.1.0 re-exports `@epure/vitest`, so existing code keeps working.
+- Renamed plugin API to `epureVitest` and
+  `EpureVitestOptions`.
+- Renamed ReScript module to `EpureVitest`.
+- Kept deprecated TypeScript and ReScript aliases for migration.
 - Moved the repository to
   [epuremethod/vitest](https://github.com/epuremethod/vitest).
-
-### Fixed
-
-- Removed the package `exports` map again (it was reintroduced during the
-  rename, after 0.6.1 had removed it). It broke ReScript projects that
-  compile out of source with `ERR_PACKAGE_PATH_NOT_EXPORTED`.
+- Added the [epurejs.dev](https://epurejs.dev) documentation build.
+- Added plural support: `I tap 10 times` matches
+  `I tap {number} time(s)`.
+- Added YAML scenarios: `.yaml` files are translated into source-mapped
+  suites, and `Given` registers their scenario and background handlers with
+  Vitest's test context.
 - Mapped a ReScript test whose name `rescript format` moved to the line after
   `it(`; such tests printed `No source mapping` and reported failures against
   the wrong line.
+- Kept the package without an `exports` map, as since 0.6.1, so ReScript
+  projects that compile out of source still resolve its modules.
 
 ## 1.0.1 — 2026-04-29
 

@@ -12,7 +12,6 @@ tags: []
 ---
 
 All fields are optional; the defaults are the convention this documentation assumes.
-The former `VitestBddOptions` name remains as a deprecated TypeScript alias.
 
 - `concurrent` (default `true`) — run scenarios concurrently. Safe because each scenario builds its own context; disable only for suites that share external state.
 - `gherkinExtensions` (default `[".feature"]`) — files parsed as pure Gherkin.

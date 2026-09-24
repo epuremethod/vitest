@@ -34,10 +34,8 @@ Installed contracts:
   `test.include`.
 - Place the steps module beside its contract using one of the documented
   resolver conventions, or provide `stepsResolver`.
-- Use `EpureVitest` from ReScript. `VitestBdd` is a deprecated compatibility
-  module.
-- Use `epureVitest` and `EpureVitestOptions` in TypeScript. Their `vitestBdd`
-  and `VitestBddOptions` aliases are deprecated.
+- Use `EpureVitest` from ReScript, and `epureVitest` and `EpureVitestOptions`
+  in TypeScript. The former `vitest-bdd` names were removed in 2.0.0.
 
 ## Wrong analogies
 

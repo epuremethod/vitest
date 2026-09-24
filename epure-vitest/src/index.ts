@@ -28,9 +28,6 @@ export type EpureVitestOptions = {
   resCompiledResolver?: (path: string) => string | null;
 };
 
-/** @deprecated Use {@link EpureVitestOptions} instead. */
-export type VitestBddOptions = EpureVitestOptions;
-
 const defaultOptions: Required<EpureVitestOptions> = {
   debug: false,
   concurrent: true,
@@ -51,17 +48,6 @@ export function epureVitest(opts: EpureVitestOptions = {}): Plugin {
       return compile(id.split("?")[0] ?? id, options);
     },
   };
-}
-
-let warned = false;
-
-/** @deprecated Use {@link epureVitest} instead. */
-export function vitestBdd(opts: VitestBddOptions = {}): Plugin {
-  if (!warned) {
-    console.warn("vitestBdd is deprecated. Use epureVitest instead.");
-    warned = true;
-  }
-  return epureVitest(opts);
 }
 
 function compile(path: string, opts: Required<EpureVitestOptions>) {

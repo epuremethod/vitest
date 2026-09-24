@@ -3,8 +3,8 @@
 Gherkin contracts and structured YAML fixtures run by Vitest, with typed steps
 for TypeScript and ReScript.
 
-> `@epure/vitest` is the new name of `vitest-bdd`. Existing APIs remain as
-> deprecated aliases, but new code should use the names shown below.
+> `@epure/vitest` is the new name of `vitest-bdd`. See
+> [Migration from vitest-bdd](#migration-from-vitest-bdd).
 
 - [Guide](https://epurejs.dev/guide.html)
 - [API reference](https://epurejs.dev/api.html)
@@ -141,8 +141,7 @@ See the [ReScript guide](https://epurejs.dev/guide.html#vitest-in-rescript).
 | `VitestBddOptions` | `EpureVitestOptions` |
 | ReScript module `VitestBdd` | ReScript module `EpureVitest` |
 
-The former TypeScript names emit deprecation guidance, and the former ReScript
-module emits a compiler/editor deprecation warning.
+The former names were deprecated aliases in 1.1.0 and are removed in 2.0.0.
 
 ## Development
 

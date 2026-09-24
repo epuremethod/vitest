@@ -8,9 +8,7 @@ refs: [expect, expected, assertions-type, describe, test, before-each]
 
 The second thing @epure/vitest does may seem unrelated until you build an épure application: it provides complete ReScript bindings for Vitest. The business floor of such an application consists of pure ReScript functions; the contracts sit above them, but the functions themselves deserve unit tests in the language in which they are written. Without bindings, a ReScript team writes its tests in TypeScript — a translation layer at exactly the boundary the method tries to keep clean.
 
-With `open EpureVitest`, the whole runner is available. The former `VitestBdd`
-module remains available as a deprecated alias and produces warnings in the
-compiler and editor:
+With `open EpureVitest`, the whole runner is available:
 
 ```rescript
 // Scheduler_test.res

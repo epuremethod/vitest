@@ -1,7 +1,0 @@
-*
-!dist/*
-!src/*.res
-!src/*.resi
-!src/*.mjs
-!rescript.json
-!README.md
