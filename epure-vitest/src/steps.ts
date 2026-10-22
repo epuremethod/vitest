@@ -65,7 +65,7 @@ export function load(given: StepType, testContext: TestContext): Promise<Runner>
 
 /** @internal Used by generated YAML suites. */
 export async function loadYaml(key: string, data: Record<string, unknown>, testContext: TestContext): Promise<void> {
-  const builder = builders[key];
+  const builder = builders[normalize(key)[0]];
   if (!builder) {
     throw new Error(`Missing Given for ${JSON.stringify(key)}`);
   }

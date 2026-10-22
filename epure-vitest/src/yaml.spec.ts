@@ -181,6 +181,18 @@ describe("YAML Given", () => {
     expect(calls).toEqual([[{ value: 42 }, context]]);
   });
 
+  it("finds a Given by the text it was registered with", async () => {
+    const key = `a section on the port ${randomUUID()}`;
+    const calls: unknown[] = [];
+    Given(key, (_, data) => {
+      calls.push(data);
+    });
+
+    await loadYaml(key, { value: 42 }, {} as TestContext);
+
+    expect(calls).toEqual([{ value: 42 }]);
+  });
+
   it("rejects a missing Given", async () => {
     await expect(loadYaml(`missing-${randomUUID()}`, {}, {} as TestContext)).rejects.toThrow(
       'Missing Given for "missing-',

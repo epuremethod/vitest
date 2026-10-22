@@ -152,4 +152,54 @@ pnpm test
 pnpm --filter epure-vitest-docs check
 ```
 
-See [CHANGELOG.md](./CHANGELOG.md) for release history.
+## Changelog
+
+- Unreleased **2.0.1**
+  - Fix: a YAML `given` is matched the same way as a feature step. It was looked up by its raw text, so a `Given` registered with a capital letter, `an` or `the` in its name threw `Missing Given`.
+- 2026-09-24 **2.0.0**
+  - Breaking: the `Given` builder receives a plain handle `{ step, test }` in both TypeScript and ReScript. `step` registers every scenario operation — the keywords (`When`, `Then`, `Alors`, …) belong to the feature file, not the code — and `test` is the running Vitest `TestContext`, so teardown is `test.onTestFinished`. The any-name proxy and the trailing `TestContext` argument are gone; the exported type is `Handle` (previously `Context`).
+  - Breaking: in ReScript, `given` binds a pattern with no captures; `given1` and `given2` bind one and two. `given` no longer types the test context into the capture slot.
+  - Breaking: remove the deprecated `vitest-bdd` names: `vitestBdd`, `VitestBddOptions` and the ReScript `VitestBdd` module. Use `epureVitest`, `EpureVitestOptions` and `EpureVitest`.
+  - Breaking: `vitest-bdd` stays at 1.1.0 and is not published for 2.0.0. Install `@epure/vitest` to upgrade.
+  - A ReScript `given`, `given1` or `given2` builder can be `async`. The binding typed the builder's answer as `unit`, so an `async` builder's `promise<unit>` was rejected, though the runner has always awaited it.
+- 2026-09-24 **1.1.0**
+  - Rename from `vitest-bdd` to `@epure/vitest`. `vitest-bdd` 1.1.0 re-exports `@epure/vitest`, so existing code keeps working.
+  - Rename plugin API to `epureVitest` and `EpureVitestOptions`.
+  - Rename ReScript module to `EpureVitest`.
+  - Keep deprecated TypeScript and ReScript aliases for migration.
+  - Move the repository to [epuremethod/vitest](https://github.com/epuremethod/vitest).
+  - Add the [epurejs.dev](https://epurejs.dev) documentation build.
+  - Add plural support: `I tap 10 times` matches `I tap {number} time(s)`.
+  - Add YAML scenarios: `.yaml` files are translated into source-mapped suites, and `Given` registers their scenario and background handlers with Vitest's test context.
+  - Map a ReScript test whose name `rescript format` moved to the line after `it(`; such tests printed `No source mapping` and reported failures against the wrong line.
+  - Keep the package without an `exports` map, as since 0.6.1, so ReScript projects that compile out of source still resolve its modules.
+- 2026-04-29 **1.0.1**
+  - Fix a rare `resolveId` bug when loaded from CommonJS.
+- 2026-04-05 **1.0.0**
+  - Upgrade tests to ReScript 12.
+  - Release the first stable version.
+- 2025-12-18 **0.6.2**
+  - Add default `tsx` and `jsx` step-file discovery.
+- 2025-12-18 **0.6.1**
+  - Remove package exports to support ReScript projects with different suffix settings.
+- 2025-09-01 **0.6.0**
+  - Add `toRecords`, `toNumbers`, and `toStrings`.
+  - Add concurrent scenarios, enabled by default.
+  - Add the Vitest test context to `Given` builders.
+  - Add complete ReScript bindings for Vitest assertions.
+  - Keep Vitest external to the bundle to preserve concurrency and test context.
+- 2025-08-28 **0.5.1**
+  - Remove accidental array-step support.
+- 2025-08-27 **0.5.0**
+  - Add array-step support.
+- 2025-08-17 **0.4.0**
+  - Add ReScript unit tests with source maps.
+- 2025-07-26 **0.3.0**
+  - Add configurable Markdown extensions and `.mdx` support.
+- 2025-07-23 **0.2.0**
+  - Add Gherkin code blocks in Markdown.
+  - Add basic ReScript step definitions.
+- 2025-07-04 **0.1.0**
+  - Add async and concurrent scenarios.
+  - Fix negative and scientific number parsing.
+  - Add the initial Vite plugin.
