@@ -29,6 +29,8 @@ Because the contract is a first-class suite, every Vitest capability applies wit
 
 Scenarios run **concurrently** by default. The closure design is what makes this safe — each scenario builds a private world, so there is no shared state to contend over. If a contract drives something genuinely shared (one database, one port), set `concurrent: false` in the [options](api.html#options-type) rather than hoping concurrency will remain safe.
 
+A scenario that builds a large world may need more than Vitest's default timeout. Tag it: `@timeout(30000)` beside its other tags gives that one scenario thirty seconds, in milliseconds, and leaves the default alone for the rest of the suite. A value that is not a whole positive number, or two such tags on one scenario, fails the parse.
+
 ::: pro
 Feature files and unit specs coexist in one config and one run. The contracts pin behavior at the domain boundary; the `.spec.ts` files pin the functions beneath it. One `vitest run` in CI reports both the window's requirement that every scenario runs green and the engineer's regression net.
 :::
