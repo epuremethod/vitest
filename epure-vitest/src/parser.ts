@@ -38,6 +38,8 @@ export type Scenario = {
   title: string;
   location: SourceLocation;
   steps: LocatedStep[];
+  /** From a `@timeout(ms)` tag: the test's timeout in milliseconds. */
+  timeout?: number;
 };
 
 export type Feature = {
@@ -208,6 +210,10 @@ function parseScenario(gsc: GScenario | GBackground, linemapper: Record<number, 
     location: loc(gsc.location),
     steps: [],
   };
+  const timeout = "tags" in gsc ? parseTimeout(gsc.tags.map((tag) => tag.name)) : undefined;
+  if (timeout !== undefined) {
+    s.timeout = timeout;
+  }
   if (gsc.steps) {
     for (const gstep of gsc.steps) {
       const step = parseStep(gstep.keyword, gstep.text);
@@ -221,4 +227,23 @@ function parseScenario(gsc: GScenario | GBackground, linemapper: Record<number, 
     }
   }
   return s;
+}
+
+const timeoutTag = /^@timeout\((.*)\)$/;
+
+function parseTimeout(tags: string[]): number | undefined {
+  let timeout: number | undefined;
+  for (const tag of tags) {
+    const match = timeoutTag.exec(tag);
+    if (!match) continue;
+    const ms = match[1];
+    if (!/^[1-9]\d*$/.test(ms)) {
+      throw new Error(`${tag}: a timeout is a whole number of milliseconds, such as @timeout(30000)`);
+    }
+    if (timeout !== undefined) {
+      throw new Error(`${tag}: a scenario takes one @timeout tag`);
+    }
+    timeout = Number(ms);
+  }
+  return timeout;
 }

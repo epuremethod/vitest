@@ -147,3 +147,31 @@ Scenario: Subtract two numbers
 09: 25`);
   });
 });
+
+describe("@timeout", () => {
+  const feature = (tags: string) => `Feature: Calculator
+
+  ${tags}
+  Scenario: Add many numbers
+    Given I have a calculator
+    Then the result is 3
+
+  Scenario: Add two numbers
+    Given I have a calculator
+    Then the result is 3
+`;
+
+  it("Should read a scenario's timeout from its tag", () => {
+    const parsed = parse(feature("@R18 @timeout(30000)"));
+    expect(parsed?.scenarios[0].timeout).toBe(30000);
+    expect(parsed?.scenarios[1].timeout).toBeUndefined();
+  });
+
+  it("Should refuse a timeout that is not a whole number of milliseconds", () => {
+    expect(() => parse(feature("@timeout(30s)"))).toThrow("a timeout is a whole number of milliseconds");
+  });
+
+  it("Should refuse two timeouts on one scenario", () => {
+    expect(() => parse(feature("@timeout(100) @timeout(200)"))).toThrow("a scenario takes one @timeout tag");
+  });
+});

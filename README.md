@@ -109,6 +109,9 @@ concurrently without a shared World. The feature file keeps its own words —
 `When`, `Then`, `Alors` — while the code has one: `step`. The handle's
 `test` is the running Vitest test, for `test.onTestFinished` teardown.
 
+A scenario tagged `@timeout(30000)` runs with a 30 s timeout instead of
+Vitest's default; the number is in milliseconds.
+
 ## ReScript
 
 Open the canonical `EpureVitest` module:
@@ -154,7 +157,8 @@ pnpm --filter epure-vitest-docs check
 
 ## Changelog
 
-- Unreleased **2.0.1**
+- Unreleased **2.1.0**
+  - A scenario tag `@timeout(ms)` sets that scenario's Vitest timeout, in milliseconds.
   - Fix: a YAML `given` is matched the same way as a feature step. It was looked up by its raw text, so a `Given` registered with a capital letter, `an` or `the` in its name threw `Missing Given`.
 - 2026-09-24 **2.0.0**
   - Breaking: the `Given` builder receives a plain handle `{ step, test }` in both TypeScript and ReScript. `step` registers every scenario operation — the keywords (`When`, `Then`, `Alors`, …) belong to the feature file, not the code — and `test` is the running Vitest `TestContext`, so teardown is `test.onTestFinished`. The any-name proxy and the trailing `TestContext` argument are gone; the exported type is `Handle` (previously `Context`).

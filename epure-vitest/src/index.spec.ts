@@ -37,6 +37,39 @@ describe("epureVitest", () => {
   });
 });
 
+describe("@timeout", () => {
+  it("passes a tagged scenario's timeout to its test", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "epure-vitest-"));
+    try {
+      const feature = path.join(dir, "calculator.feature");
+      await writeFile(
+        feature,
+        [
+          "Feature: Calculator",
+          "",
+          "@timeout(30000)",
+          "Scenario: Add many",
+          "  Given a calculator",
+          "",
+          "Scenario: Add",
+          "  Given a calculator",
+        ].join("\n"),
+      );
+      await writeFile(`${feature}.ts`, "");
+
+      const load = epureVitest().load;
+      if (typeof load !== "function") throw new Error("Expected a Vite load hook");
+      const result = await load.call({} as never, feature);
+      if (!result || typeof result === "string") throw new Error("Expected compiled code");
+
+      const closes = result.code.split("\n").filter((line) => line.startsWith("  }"));
+      expect(closes).toEqual(["  }, 30000);", "  });"]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+});
+
 describe("resCompile", () => {
   it("maps a test whose name follows `it(` on the next line", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "epure-vitest-"));

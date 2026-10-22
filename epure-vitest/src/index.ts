@@ -120,7 +120,8 @@ function compile(path: string, opts: Required<EpureVitestOptions>) {
           step.location,
         );
       }
-      push(`  });`, given.location);
+      const timeout = scenario.timeout === undefined ? "" : `, ${scenario.timeout}`;
+      push(`  }${timeout});`, given.location);
       push("", given.location);
     }
     push(`});`, feature.location);
